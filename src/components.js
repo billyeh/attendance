@@ -3,7 +3,7 @@ import moment from 'moment-timezone';
 import {Button, Input} from 'react-bootstrap';
 import {Link} from 'react-router';
 
-import UpsertMeetingMixin from './util.js';
+import {UpsertMeetingMixin} from './util.js';
 
 var MeetingAdd = React.createClass({
   mixins: [UpsertMeetingMixin],
