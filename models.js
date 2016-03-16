@@ -4,8 +4,15 @@ mongoose.connect('mongodb://localhost/attendance');
 
 var Meeting = mongoose.model('Meeting', {
   category: String,
-  date: Date,
-  attendees: [{fullname: String}]
+  locality: String,
+  attendees: [{
+    fullname: String,
+    category: String
+  }],
+  instances: [{
+    date: Date,
+    attendance: [Boolean]
+  }]
 });
 
 module.exports.Meeting = Meeting;

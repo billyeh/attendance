@@ -1,12 +1,16 @@
 import React from 'react';
 import moment from 'moment-timezone';
-import DatePicker from 'react-datepicker';
-import {Button, Input} from 'react-bootstrap';
+import {Button, Input, DropdownButton, MenuItem} from 'react-bootstrap';
 
 require('react-datepicker/dist/react-datepicker.css');
 
 import {UpsertMeetingMixin} from './util.js';
-import {MeetingAdd, MeetingListItem, MeetingList} from './components.js';
+import {MeetingAdd, 
+  MeetingList, 
+  MeetingCategory,
+  MeetingDate,
+  AttendeeList
+} from './components.js';
 
 var MeetingBox = React.createClass({
   getInitialState: function() {
@@ -37,54 +41,52 @@ var MeetingForm = React.createClass({
       meeting: {
         _id: this.props.params.id,
         category: "",
-        date: moment()
-      }
+        attendees: [],
+        instances: []
+      },
     };
   },
 
   componentDidMount: function() {
     $.get('/api/meetings/' + this.props.params.id, function(data) {
-      data.date = moment(data.date);
       this.setState( {meeting: data} );
     }.bind(this));
   },
 
+  handler: function(path, valFunc) {
+    var h = function(newVal) {
+      var tmp = this.state;
+      for (var i = 0; i < path.length - 1; i++) {
+        tmp = tmp[path[i]];
+      }
+      tmp[path[path.length - 1]] = valFunc(newVal);
+      this.setState(tmp);
+    };
+    h.bind(this);
+    return h;
+  },
+
+  get handleCategory() { 
+    return this.handler(['meeting', 'category'], function(e) {
+      return e.target.value;
+    });
+  },
+
+  handleDate: function(d) {
+    var id = this.props.params.id;
+    this.context.router.replace({
+      pathname: "/meetings/" + id,
+      query: {date: d.format().split(":")[0]}
+    });
+  },
+
   handleSubmit: function(e) {
     e.preventDefault();
-    var form = document.forms.meetingAdd;
-    var meeting = {
-      _id: this.props.params.id,
-      category: form.category.value,
-      date: this.state.meeting.date,
-      attendees: []
-    };
-    this.addMeeting(meeting,
+    this.addMeeting(this.state.meeting,
       function(data) {
         this.context.router.push("/");
       }.bind(this)
     );
-  },
-
-  handleChange: function(e) {
-    var form = document.forms.meetingAdd;
-    var meeting = {
-      _id: this.props.params.id,
-      category: form.category.value,
-      date: this.state.meeting.date,
-      attendees: []
-    };
-    this.setState( { meeting: meeting } );
-  },
-
-  handleDateChange: function(d) {
-    var form = document.forms.meetingAdd;
-    var meeting = {
-      _id: this.props.params.id,
-      category: form.category.value,
-      date: d,
-      attendees: []
-    };
-    this.setState({ meeting: meeting });
   },
 
   contextTypes: {
@@ -92,19 +94,19 @@ var MeetingForm = React.createClass({
   },
 
   render: function() {
+    var date = this.props.location.query.date;
+
     return (
       <div>
-        <form name="meetingAdd">
-          <Input type="text" name="category" placeholder="Category" block
-            value={this.state.meeting.category} onChange={this.handleChange}/>
-          <DatePicker 
-            readOnly={true}
-            className="form-control"
-            selected={this.state.meeting.date} 
-            onChange={this.handleDateChange} />
+        <form className="form-group" name="meetingAdd">
+          <MeetingCategory category={this.state.meeting.category}
+            handle={this.handleCategory}/>
+          <MeetingDate date={date ? moment(date) : moment(new Date())}
+            handle={this.handleDate}/>
+          <AttendeeList attendees={this.state.meeting.attendees} />
           <Button 
             className="btn-primary btn-raised" block
-            type="submit" 
+            type="submit" style={{marginTop: "15px"}}
             onClick={this.handleSubmit}>
             Save Meeting
           </Button>

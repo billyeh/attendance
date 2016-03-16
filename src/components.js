@@ -1,9 +1,74 @@
 import React from 'react';
 import moment from 'moment-timezone';
-import {Button, Input} from 'react-bootstrap';
+import DatePicker from 'react-datepicker';
+import {Button, Input, DropdownButton, MenuItem} from 'react-bootstrap';
 import {Link} from 'react-router';
 
 import {UpsertMeetingMixin} from './util.js';
+
+require('react-datepicker/dist/react-datepicker.css');
+
+var AttendeeList = React.createClass({
+  render: function() {
+    var attendees = this.props.attendees.map(function(attendee, i) {
+      return <Attendee attendee={attendee} key={i}/>;
+    });
+    return (
+      <div>
+        {attendees}
+      </div>
+    );
+  }
+});
+
+var Attendee = React.createClass({
+  render: function() {
+    var delBox = (
+      <span className="input-group-btn">
+        <Button>&#10005;</Button>
+      </span>
+    );
+    var typeBox = (
+      <span className="input-group-btn">
+        <DropdownButton title={this.props.attendee.category}
+          id="type-dropdown">
+          <MenuItem key="1">K</MenuItem>
+          <MenuItem key="2">S</MenuItem>
+          <MenuItem key="3">N</MenuItem>
+        </DropdownButton>
+        <Button>&#10003;</Button>
+      </span>
+    );
+    return (
+      <div key={this.props.key} className="input-group">
+        {delBox}
+        <input type="text" name="fullname" placeholder="Full Name"
+          value={this.props.attendee.fullname} className="form-control"
+          style={{marginBottom: "0px"}}/>
+        {typeBox}
+      </div>
+    );
+  }
+});
+
+var MeetingDate = React.createClass({
+  render: function() {
+    return (
+       <DatePicker 
+         readOnly={true} className="form-group form-control"
+         selected={this.props.date} onChange={this.props.handle} />
+    );
+  }
+});
+
+var MeetingCategory = React.createClass({
+  render: function() {
+    return (
+      <Input type="text" name="category" placeholder="Category"
+        value={this.props.category} onChange={this.props.handle}/>
+    );
+  }
+});
 
 var MeetingAdd = React.createClass({
   mixins: [UpsertMeetingMixin],
@@ -11,7 +76,7 @@ var MeetingAdd = React.createClass({
   handleClick: function(e) {
     e.preventDefault();
     this.addMeeting(
-      {category: "Test", date: Date(), attendees: []},
+      {category: "Test", attendees: [], instances: []},
       function(data) {
         this.context.router.push("/meetings/" + data._id);
       }.bind(this)
@@ -54,7 +119,7 @@ var MeetingListItem = React.createClass({
       <Link to={"/meetings/" + this.props.data._id}>
         <div>
           <h4>
-            {moment(this.props.data.date).format("LL")} {this.props.data.category}
+            {this.props.data.category}
           </h4>
         </div>
       </Link>
@@ -63,5 +128,8 @@ var MeetingListItem = React.createClass({
 });
 
 module.exports.MeetingAdd = MeetingAdd;
-module.exports.MeetingListItem = MeetingListItem;
 module.exports.MeetingList = MeetingList;
+
+module.exports.MeetingCategory = MeetingCategory;
+module.exports.MeetingDate = MeetingDate;
+module.exports.AttendeeList = AttendeeList;
