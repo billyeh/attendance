@@ -25,6 +25,7 @@ app.get('/api/meetings', function(req, res) {
 app.post('/api/meetings', function(req, res) {
   var id = req.body._id || new mongoose.mongo.ObjectID();
   delete req.body._id;
+  delete req.body.__v;
   Meeting.findOneAndUpdate({_id: id}, req.body,
     {new: true, upsert: true},
     function(err, meeting) {
