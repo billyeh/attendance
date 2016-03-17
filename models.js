@@ -6,12 +6,13 @@ var Meeting = mongoose.model('Meeting', {
   category: String,
   locality: String,
   attendees: [{
+    id: {type: mongoose.Schema.Types.ObjectId, default: mongoose.Types.ObjectId},
     fullname: String,
-    category: String
+    category: {type: String, default: 'None'}
   }],
   instances: [{
     date: Date,
-    attendance: [Boolean]
+    attendance: [String]
   }]
 });
 

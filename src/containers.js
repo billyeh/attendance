@@ -1,13 +1,13 @@
 import React from 'react';
 import moment from 'moment-timezone';
+import ObjectID from 'bson-objectid';
 import {Button, Input, DropdownButton, MenuItem} from 'react-bootstrap';
-
-require('react-datepicker/dist/react-datepicker.css');
 
 import {UpsertMeetingMixin} from './util.js';
 import {MeetingAdd, 
   MeetingList, 
   MeetingCategory,
+  MeetingLocality,
   MeetingDate,
   AttendeeList
 } from './components.js';
@@ -41,6 +41,7 @@ var MeetingForm = React.createClass({
       meeting: {
         _id: this.props.params.id,
         category: "",
+        locality: "",
         attendees: [],
         instances: []
       },
@@ -53,23 +54,46 @@ var MeetingForm = React.createClass({
     }.bind(this));
   },
 
-  handler: function(path, valFunc) {
-    var h = function(newVal) {
-      var tmp = this.state;
-      for (var i = 0; i < path.length - 1; i++) {
-        tmp = tmp[path[i]];
-      }
-      tmp[path[path.length - 1]] = valFunc(newVal);
-      this.setState(tmp);
-    };
-    h.bind(this);
-    return h;
+  handleCategory: function(e) { 
+    var tmp = this.state;
+    tmp.meeting.category = e.target.value;
+    this.setState(tmp);
   },
 
-  get handleCategory() { 
-    return this.handler(['meeting', 'category'], function(e) {
-      return e.target.value;
+  handleLocality: function(e) {
+    var tmp = this.state;
+    tmp.meeting.locality = e.target.value;
+    this.setState(tmp);
+  },
+
+  handleAttendee: function(e) {
+    var tmp = this.state;
+    var index = tmp.meeting.attendees.findIndex(function(a) {
+      return a.id === e.target.id
     });
+    tmp.meeting.attendees[index].fullname = e.target.value;
+    this.setState(tmp);
+  },
+
+  handleAttendeeCat: function(e) {
+    e.preventDefault();
+    var tmp = this.state;
+    var index = tmp.meeting.attendees.findIndex(function(a) {
+      return a.id === e.target.id
+    });
+    tmp.meeting.attendees[index].category = e.target.innerHTML;
+    this.setState(tmp);
+  },
+
+  handleAdd: function(e) {
+    e.preventDefault();
+    var tmp = this.state;
+    var a = {
+      fullname: "",
+      id: ObjectID()
+    };
+    tmp.meeting.attendees.push(a);
+    this.setState(tmp);
   },
 
   handleDate: function(d) {
@@ -98,12 +122,17 @@ var MeetingForm = React.createClass({
 
     return (
       <div>
+        <h4>Meeting Information</h4>
         <form className="form-group" name="meetingAdd">
           <MeetingCategory category={this.state.meeting.category}
             handle={this.handleCategory}/>
+          <MeetingLocality locality={this.state.meeting.locality}
+            handle={this.handleLocality}/>
           <MeetingDate date={date ? moment(date) : moment(new Date())}
             handle={this.handleDate}/>
-          <AttendeeList attendees={this.state.meeting.attendees} />
+          <AttendeeList attendees={this.state.meeting.attendees} 
+            handle={this.handleAttendee} handleAdd={this.handleAdd}
+            handleCat={this.handleAttendeeCat}/>
           <Button 
             className="btn-primary btn-raised" block
             type="submit" style={{marginTop: "15px"}}

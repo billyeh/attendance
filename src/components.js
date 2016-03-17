@@ -4,17 +4,24 @@ import DatePicker from 'react-datepicker';
 import {Button, Input, DropdownButton, MenuItem} from 'react-bootstrap';
 import {Link} from 'react-router';
 
-import {UpsertMeetingMixin} from './util.js';
-
 require('react-datepicker/dist/react-datepicker.css');
+
+import {UpsertMeetingMixin} from './util.js';
 
 var AttendeeList = React.createClass({
   render: function() {
     var attendees = this.props.attendees.map(function(attendee, i) {
-      return <Attendee attendee={attendee} key={i}/>;
-    });
+      return (<Attendee attendee={attendee} key={i} {...this.props} />);
+    }.bind(this));
+    console.log(attendees);
     return (
       <div>
+        <h4>Attendees
+          <Button onClick={this.props.handleAdd}
+            style={{marginLeft: "10px"}}>
+            Add
+          </Button>
+        </h4>
         {attendees}
       </div>
     );
@@ -24,17 +31,22 @@ var AttendeeList = React.createClass({
 var Attendee = React.createClass({
   render: function() {
     var delBox = (
-      <span className="input-group-btn">
+      <span className="input-group-btn"
+        onClick="">
         <Button>&#10005;</Button>
       </span>
     );
     var typeBox = (
       <span className="input-group-btn">
-        <DropdownButton title={this.props.attendee.category}
-          id="type-dropdown">
-          <MenuItem key="1">K</MenuItem>
-          <MenuItem key="2">S</MenuItem>
-          <MenuItem key="3">N</MenuItem>
+        <DropdownButton className="btn-large"
+          title={this.props.attendee.category}
+          id={this.props.attendee.id}>
+          <MenuItem onClick={this.props.handleCat} key="1"
+            id={this.props.attendee.id}>Student</MenuItem>
+          <MenuItem onClick={this.props.handleCat} key="2"
+            id={this.props.attendee.id}>New One</MenuItem>
+          <MenuItem onClick={this.props.handleCat} key="3"
+            id={this.props.attendee.id}>None</MenuItem>
         </DropdownButton>
         <Button>&#10003;</Button>
       </span>
@@ -43,8 +55,9 @@ var Attendee = React.createClass({
       <div key={this.props.key} className="input-group">
         {delBox}
         <input type="text" name="fullname" placeholder="Full Name"
+          id={this.props.attendee.id}
           value={this.props.attendee.fullname} className="form-control"
-          style={{marginBottom: "0px"}}/>
+          style={{marginBottom: "0px"}} onChange={this.props.handle}/>
         {typeBox}
       </div>
     );
@@ -57,6 +70,15 @@ var MeetingDate = React.createClass({
        <DatePicker 
          readOnly={true} className="form-group form-control"
          selected={this.props.date} onChange={this.props.handle} />
+    );
+  }
+});
+
+var MeetingLocality = React.createClass({
+  render: function() {
+    return (
+      <Input type="text" name="locality" placeholder="Locality"
+        value={this.props.locality} onChange={this.props.handle}/>
     );
   }
 });
@@ -76,7 +98,12 @@ var MeetingAdd = React.createClass({
   handleClick: function(e) {
     e.preventDefault();
     this.addMeeting(
-      {category: "Test", attendees: [], instances: []},
+      {
+        category: "Untitled Meeting",
+        locality: "",
+        attendees: [],
+        instances: []
+      },
       function(data) {
         this.context.router.push("/meetings/" + data._id);
       }.bind(this)
@@ -131,5 +158,6 @@ module.exports.MeetingAdd = MeetingAdd;
 module.exports.MeetingList = MeetingList;
 
 module.exports.MeetingCategory = MeetingCategory;
+module.exports.MeetingLocality = MeetingLocality;
 module.exports.MeetingDate = MeetingDate;
 module.exports.AttendeeList = AttendeeList;
