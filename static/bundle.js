@@ -56519,11 +56519,24 @@
 	  displayName: 'Attendee',
 
 	  render: function render() {
-	    var checked = this.props.instance.attendance.find(function (a) {
-	      return a === this.props.attendee.id;
-	    }.bind(this));
-	    var checkStyle = checked ? "success" : "default";
-	    var delBox = _react2.default.createElement(
+	    return _react2.default.createElement(
+	      'div',
+	      { key: this.props.key, className: 'input-group' },
+	      _react2.default.createElement(DelBox, this.props),
+	      _react2.default.createElement('input', { type: 'text', name: 'fullname', placeholder: 'Full Name',
+	        id: this.props.attendee.id,
+	        value: this.props.attendee.fullname, className: 'form-control',
+	        style: { marginBottom: "0px" }, onChange: this.props.handle }),
+	      _react2.default.createElement(TypeBox, this.props)
+	    );
+	  }
+	});
+
+	var DelBox = _react2.default.createClass({
+	  displayName: 'DelBox',
+
+	  render: function render() {
+	    return _react2.default.createElement(
 	      'span',
 	      { className: 'input-group-btn' },
 	      _react2.default.createElement(
@@ -56534,7 +56547,27 @@
 	        '✕'
 	      )
 	    );
-	    var typeBox = _react2.default.createElement(
+	  }
+	});
+
+	var TypeBox = _react2.default.createClass({
+	  displayName: 'TypeBox',
+
+	  render: function render() {
+	    var checked = this.props.instance.attendance.find(function (a) {
+	      return a === this.props.attendee.id;
+	    }.bind(this));
+	    var checkStyle = checked ? "success" : "default";
+	    var items = ['None', 'College', 'New One', 'Full-time', 'Visitor', 'Community', 'YP'];
+	    var menuItems = items.map(function (i, index) {
+	      return _react2.default.createElement(
+	        _reactBootstrap.MenuItem,
+	        { onClick: this.props.handleCat, key: index,
+	          id: this.props.attendee.id },
+	        i
+	      );
+	    }.bind(this));
+	    return _react2.default.createElement(
 	      'span',
 	      { className: 'input-group-btn' },
 	      _react2.default.createElement(
@@ -56542,48 +56575,7 @@
 	        { className: 'btn-large',
 	          title: this.props.attendee.category,
 	          id: this.props.attendee.id },
-	        _react2.default.createElement(
-	          _reactBootstrap.MenuItem,
-	          { onClick: this.props.handleCat, key: '0',
-	            id: this.props.attendee.id },
-	          'None'
-	        ),
-	        _react2.default.createElement(
-	          _reactBootstrap.MenuItem,
-	          { onClick: this.props.handleCat, key: '1',
-	            id: this.props.attendee.id },
-	          'College'
-	        ),
-	        _react2.default.createElement(
-	          _reactBootstrap.MenuItem,
-	          { onClick: this.props.handleCat, key: '2',
-	            id: this.props.attendee.id },
-	          'New One'
-	        ),
-	        _react2.default.createElement(
-	          _reactBootstrap.MenuItem,
-	          { onClick: this.props.handleCat, key: '3',
-	            id: this.props.attendee.id },
-	          'Full-time'
-	        ),
-	        _react2.default.createElement(
-	          _reactBootstrap.MenuItem,
-	          { onClick: this.props.handleCat, key: '4',
-	            id: this.props.attendee.id },
-	          'Visitor'
-	        ),
-	        _react2.default.createElement(
-	          _reactBootstrap.MenuItem,
-	          { onClick: this.props.handleCat, key: '5',
-	            id: this.props.attendee.id },
-	          'Community'
-	        ),
-	        _react2.default.createElement(
-	          _reactBootstrap.MenuItem,
-	          { onClick: this.props.handleCat, key: '6',
-	            id: this.props.attendee.id },
-	          'YP'
-	        )
+	        menuItems
 	      ),
 	      _react2.default.createElement(
 	        _reactBootstrap.Button,
@@ -56592,16 +56584,6 @@
 	          id: this.props.attendee.id },
 	        '✓'
 	      )
-	    );
-	    return _react2.default.createElement(
-	      'div',
-	      { key: this.props.key, className: 'input-group' },
-	      delBox,
-	      _react2.default.createElement('input', { type: 'text', name: 'fullname', placeholder: 'Full Name',
-	        id: this.props.attendee.id,
-	        value: this.props.attendee.fullname, className: 'form-control',
-	        style: { marginBottom: "0px" }, onChange: this.props.handle }),
-	      typeBox
 	    );
 	  }
 	});

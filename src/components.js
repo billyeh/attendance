@@ -29,11 +29,22 @@ var AttendeeList = React.createClass({
 
 var Attendee = React.createClass({
   render: function() {
-    var checked = this.props.instance.attendance.find(function(a) {
-      return a === this.props.attendee.id;
-    }.bind(this));
-    var checkStyle = checked ? "success" : "default";
-    var delBox = (
+    return (
+      <div key={this.props.key} className="input-group">
+        <DelBox {...this.props} />
+        <input type="text" name="fullname" placeholder="Full Name"
+          id={this.props.attendee.id}
+          value={this.props.attendee.fullname} className="form-control"
+          style={{marginBottom: "0px"}} onChange={this.props.handle}/>
+        <TypeBox {...this.props} />
+      </div>
+    );
+  }
+});
+
+var DelBox = React.createClass({
+  render: function() {
+    return (
       <span className="input-group-btn">
         <Button onClick={this.props.handleDel}
           bsStyle="danger"
@@ -42,25 +53,31 @@ var Attendee = React.createClass({
         </Button>
       </span>
     );
-    var typeBox = (
+  }
+});
+
+var TypeBox = React.createClass({
+  render: function() {
+    var checked = this.props.instance.attendance.find(function(a) {
+      return a === this.props.attendee.id;
+    }.bind(this));
+    var checkStyle = checked ? "success" : "default";
+    var items = ['None', 'College', 'New One', 'Full-time', 'Visitor', 
+      'Community', 'YP'];
+    var menuItems = items.map(function(i, index) {
+      return (
+        <MenuItem onClick={this.props.handleCat} key={index}
+          id={this.props.attendee.id}>
+          {i}
+        </MenuItem>
+      );
+    }.bind(this));
+    return (
       <span className="input-group-btn">
         <DropdownButton className="btn-large"
           title={this.props.attendee.category}
           id={this.props.attendee.id}>
-          <MenuItem onClick={this.props.handleCat} key="0"
-            id={this.props.attendee.id}>None</MenuItem>
-          <MenuItem onClick={this.props.handleCat} key="1"
-            id={this.props.attendee.id}>College</MenuItem>
-          <MenuItem onClick={this.props.handleCat} key="2"
-            id={this.props.attendee.id}>New One</MenuItem>
-          <MenuItem onClick={this.props.handleCat} key="3"
-            id={this.props.attendee.id}>Full-time</MenuItem>
-          <MenuItem onClick={this.props.handleCat} key="4"
-            id={this.props.attendee.id}>Visitor</MenuItem>
-          <MenuItem onClick={this.props.handleCat} key="5"
-            id={this.props.attendee.id}>Community</MenuItem>
-          <MenuItem onClick={this.props.handleCat} key="6"
-            id={this.props.attendee.id}>YP</MenuItem>
+          {menuItems}
         </DropdownButton>
         <Button onClick={this.props.handleCheck}
           bsStyle={checkStyle}
@@ -68,16 +85,6 @@ var Attendee = React.createClass({
           &#10003;
         </Button>
       </span>
-    );
-    return (
-      <div key={this.props.key} className="input-group">
-        {delBox}
-        <input type="text" name="fullname" placeholder="Full Name"
-          id={this.props.attendee.id}
-          value={this.props.attendee.fullname} className="form-control"
-          style={{marginBottom: "0px"}} onChange={this.props.handle}/>
-        {typeBox}
-      </div>
     );
   }
 });
