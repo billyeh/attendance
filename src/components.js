@@ -29,9 +29,15 @@ var AttendeeList = React.createClass({
 
 var Attendee = React.createClass({
   render: function() {
+    console.log(this.props.instance);
+    var checked = this.props.instance.attendance.find(function(a) {
+      return a === this.props.attendee.id;
+    }.bind(this));
+    var checkStyle = checked ? "success" : "default";
     var delBox = (
       <span className="input-group-btn">
-        <Button onClick={this.props.handleDel} bsStyle="danger"
+        <Button onClick={this.props.handleDel}
+          bsStyle="danger"
           id={this.props.attendee.id}>
           &#10005;
         </Button>
@@ -50,6 +56,7 @@ var Attendee = React.createClass({
             id={this.props.attendee.id}>None</MenuItem>
         </DropdownButton>
         <Button onClick={this.props.handleCheck}
+          bsStyle={checkStyle}
           id={this.props.attendee.id}>
           &#10003;
         </Button>

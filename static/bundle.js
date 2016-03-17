@@ -24938,7 +24938,7 @@
 	    var instance = this.state.meeting.instances.find(function (i) {
 	      return date.isSame(i.date, 'day');
 	    });
-	    instance = instance || [];
+	    instance = instance || { date: date, attendance: [] };
 	    return instance;
 	  },
 
@@ -56351,12 +56351,18 @@
 	  displayName: 'Attendee',
 
 	  render: function render() {
+	    console.log(this.props.instance);
+	    var checked = this.props.instance.attendance.find(function (a) {
+	      return a === this.props.attendee.id;
+	    }.bind(this));
+	    var checkStyle = checked ? "success" : "default";
 	    var delBox = _react2.default.createElement(
 	      'span',
 	      { className: 'input-group-btn' },
 	      _react2.default.createElement(
 	        _reactBootstrap.Button,
-	        { onClick: this.props.handleDel, bsStyle: 'danger',
+	        { onClick: this.props.handleDel,
+	          bsStyle: 'danger',
 	          id: this.props.attendee.id },
 	        '✕'
 	      )
@@ -56391,6 +56397,7 @@
 	      _react2.default.createElement(
 	        _reactBootstrap.Button,
 	        { onClick: this.props.handleCheck,
+	          bsStyle: checkStyle,
 	          id: this.props.attendee.id },
 	        '✓'
 	      )

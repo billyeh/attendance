@@ -164,7 +164,7 @@ var MeetingForm = React.createClass({
     var instance = this.state.meeting.instances.find(function(i) {
       return date.isSame(i.date, 'day');
     });
-    instance = instance || [];
+    instance = instance || {date: date, attendance: []};
     return instance;
   },
 
