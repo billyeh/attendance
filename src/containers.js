@@ -100,7 +100,7 @@ var MeetingForm = React.createClass({
   handleDel: function(e) {
     e.preventDefault();
     var c = confirm("Are you sure you want to delete this attendee? \
-      Their attendance record will be lost as well.");
+      Their attendance record will be removed as well.");
     if (!c) {
       return;
     }
@@ -109,6 +109,30 @@ var MeetingForm = React.createClass({
       return a.id === e.target.id
     });
     tmp.meeting.attendees.splice(index, 1);
+    this.setState(tmp);
+  },
+
+  handleCheck: function(e) {
+    e.preventDefault();
+    var tmp = this.state;
+    var date = this.getDate();
+    var instanceIndex = tmp.meeting.instances.findIndex(function(i) {
+      return date.isSame(i.date, 'day');
+    });
+    var instance = {date: date, attendance: []};
+    if (instanceIndex >= 0) {
+      instance = tmp.meeting.instances[instanceIndex];
+    }
+    var attendeeIndex = instance.attendance.findIndex(function(a) {
+      return a === e.target.id;
+    });
+    console.log(attendeeIndex);
+    if (attendeeIndex >= 0) {
+      instance.attendance.splice(attendeeIndex, 1);
+    } else {
+      instance.attendance.push(e.target.id);
+    }
+    tmp.meeting.instances[instanceIndex] = instance;
     this.setState(tmp);
   },
 
@@ -128,14 +152,27 @@ var MeetingForm = React.createClass({
       }.bind(this)
     );
   },
+  
+  getDate: function() {
+    var date = this.props.location.query.date;
+    date = date ? moment(date) : moment(new Date());
+    return date;
+  },
+
+  getInstance: function() {
+    var date = this.getDate();
+    var instance = this.state.meeting.instances.find(function(i) {
+      return date.isSame(i.date, 'day');
+    });
+    instance = instance || [];
+    return instance;
+  },
 
   contextTypes: {
     router: React.PropTypes.object
   },
 
   render: function() {
-    var date = this.props.location.query.date;
-
     return (
       <div>
         <h4>Meeting Information</h4>
@@ -144,11 +181,15 @@ var MeetingForm = React.createClass({
             handle={this.handleCategory}/>
           <MeetingLocality locality={this.state.meeting.locality}
             handle={this.handleLocality}/>
-          <MeetingDate date={date ? moment(date) : moment(new Date())}
+          <MeetingDate date={this.getDate()}
             handle={this.handleDate}/>
-          <AttendeeList attendees={this.state.meeting.attendees} 
+          <AttendeeList 
+            attendees={this.state.meeting.attendees} 
+            instance={this.getInstance()}
             handle={this.handleAttendee} handleAdd={this.handleAdd}
-            handleCat={this.handleAttendeeCat} handleDel={this.handleDel}/>
+            handleCat={this.handleAttendeeCat} handleDel={this.handleDel}
+            handleCheck={this.handleCheck}
+            />
           <Button 
             className="btn-primary btn-raised" block
             type="submit" style={{marginTop: "15px"}}

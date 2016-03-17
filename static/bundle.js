@@ -24876,7 +24876,7 @@
 	  handleDel: function handleDel(e) {
 	    e.preventDefault();
 	    var c = confirm("Are you sure you want to delete this attendee? \
-	      Their attendance record will be lost as well.");
+	      Their attendance record will be removed as well.");
 	    if (!c) {
 	      return;
 	    }
@@ -24885,6 +24885,30 @@
 	      return a.id === e.target.id;
 	    });
 	    tmp.meeting.attendees.splice(index, 1);
+	    this.setState(tmp);
+	  },
+
+	  handleCheck: function handleCheck(e) {
+	    e.preventDefault();
+	    var tmp = this.state;
+	    var date = this.getDate();
+	    var instanceIndex = tmp.meeting.instances.findIndex(function (i) {
+	      return date.isSame(i.date, 'day');
+	    });
+	    var instance = { date: date, attendance: [] };
+	    if (instanceIndex >= 0) {
+	      instance = tmp.meeting.instances[instanceIndex];
+	    }
+	    var attendeeIndex = instance.attendance.findIndex(function (a) {
+	      return a === e.target.id;
+	    });
+	    console.log(attendeeIndex);
+	    if (attendeeIndex >= 0) {
+	      instance.attendance.splice(attendeeIndex, 1);
+	    } else {
+	      instance.attendance.push(e.target.id);
+	    }
+	    tmp.meeting.instances[instanceIndex] = instance;
 	    this.setState(tmp);
 	  },
 
@@ -24903,13 +24927,26 @@
 	    }.bind(this));
 	  },
 
+	  getDate: function getDate() {
+	    var date = this.props.location.query.date;
+	    date = date ? (0, _momentTimezone2.default)(date) : (0, _momentTimezone2.default)(new Date());
+	    return date;
+	  },
+
+	  getInstance: function getInstance() {
+	    var date = this.getDate();
+	    var instance = this.state.meeting.instances.find(function (i) {
+	      return date.isSame(i.date, 'day');
+	    });
+	    instance = instance || [];
+	    return instance;
+	  },
+
 	  contextTypes: {
 	    router: _react2.default.PropTypes.object
 	  },
 
 	  render: function render() {
-	    var date = this.props.location.query.date;
-
 	    return _react2.default.createElement(
 	      'div',
 	      null,
@@ -24925,11 +24962,15 @@
 	          handle: this.handleCategory }),
 	        _react2.default.createElement(_components.MeetingLocality, { locality: this.state.meeting.locality,
 	          handle: this.handleLocality }),
-	        _react2.default.createElement(_components.MeetingDate, { date: date ? (0, _momentTimezone2.default)(date) : (0, _momentTimezone2.default)(new Date()),
+	        _react2.default.createElement(_components.MeetingDate, { date: this.getDate(),
 	          handle: this.handleDate }),
-	        _react2.default.createElement(_components.AttendeeList, { attendees: this.state.meeting.attendees,
+	        _react2.default.createElement(_components.AttendeeList, {
+	          attendees: this.state.meeting.attendees,
+	          instance: this.getInstance(),
 	          handle: this.handleAttendee, handleAdd: this.handleAdd,
-	          handleCat: this.handleAttendeeCat, handleDel: this.handleDel }),
+	          handleCat: this.handleAttendeeCat, handleDel: this.handleDel,
+	          handleCheck: this.handleCheck
+	        }),
 	        _react2.default.createElement(
 	          _reactBootstrap.Button,
 	          {
@@ -56320,7 +56361,6 @@
 	        '✕'
 	      )
 	    );
-	    console.log(this.props.attendee);
 	    var typeBox = _react2.default.createElement(
 	      'span',
 	      { className: 'input-group-btn' },
@@ -56350,7 +56390,8 @@
 	      ),
 	      _react2.default.createElement(
 	        _reactBootstrap.Button,
-	        null,
+	        { onClick: this.props.handleCheck,
+	          id: this.props.attendee.id },
 	        '✓'
 	      )
 	    );

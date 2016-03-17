@@ -37,7 +37,6 @@ var Attendee = React.createClass({
         </Button>
       </span>
     );
-    console.log(this.props.attendee);
     var typeBox = (
       <span className="input-group-btn">
         <DropdownButton className="btn-large"
@@ -50,7 +49,10 @@ var Attendee = React.createClass({
           <MenuItem onClick={this.props.handleCat} key="3"
             id={this.props.attendee.id}>None</MenuItem>
         </DropdownButton>
-        <Button>&#10003;</Button>
+        <Button onClick={this.props.handleCheck}
+          id={this.props.attendee.id}>
+          &#10003;
+        </Button>
       </span>
     );
     return (
