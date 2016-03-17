@@ -90,9 +90,20 @@ var MeetingForm = React.createClass({
     var tmp = this.state;
     var a = {
       fullname: "",
-      id: ObjectID()
+      id: ObjectID().str,
+      category: "None"
     };
     tmp.meeting.attendees.push(a);
+    this.setState(tmp);
+  },
+
+  handleDel: function(e) {
+    e.preventDefault();
+    var tmp = this.state;
+    var index = tmp.meeting.attendees.findIndex(function(a) {
+      return a.id === e.target.id
+    });
+    tmp.meeting.attendees.splice(index, 1);
     this.setState(tmp);
   },
 
@@ -132,7 +143,7 @@ var MeetingForm = React.createClass({
             handle={this.handleDate}/>
           <AttendeeList attendees={this.state.meeting.attendees} 
             handle={this.handleAttendee} handleAdd={this.handleAdd}
-            handleCat={this.handleAttendeeCat}/>
+            handleCat={this.handleAttendeeCat} handleDel={this.handleDel}/>
           <Button 
             className="btn-primary btn-raised" block
             type="submit" style={{marginTop: "15px"}}

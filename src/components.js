@@ -13,7 +13,6 @@ var AttendeeList = React.createClass({
     var attendees = this.props.attendees.map(function(attendee, i) {
       return (<Attendee attendee={attendee} key={i} {...this.props} />);
     }.bind(this));
-    console.log(attendees);
     return (
       <div>
         <h4>Attendees
@@ -31,11 +30,14 @@ var AttendeeList = React.createClass({
 var Attendee = React.createClass({
   render: function() {
     var delBox = (
-      <span className="input-group-btn"
-        onClick="">
-        <Button>&#10005;</Button>
+      <span className="input-group-btn">
+        <Button onClick={this.props.handleDel}
+          id={this.props.attendee.id}>
+          &#10005;
+        </Button>
       </span>
     );
+    console.log(this.props.attendee);
     var typeBox = (
       <span className="input-group-btn">
         <DropdownButton className="btn-large"

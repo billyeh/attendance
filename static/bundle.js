@@ -24866,9 +24866,20 @@
 	    var tmp = this.state;
 	    var a = {
 	      fullname: "",
-	      id: (0, _bsonObjectid2.default)()
+	      id: (0, _bsonObjectid2.default)().str,
+	      category: "None"
 	    };
 	    tmp.meeting.attendees.push(a);
+	    this.setState(tmp);
+	  },
+
+	  handleDel: function handleDel(e) {
+	    e.preventDefault();
+	    var tmp = this.state;
+	    var index = tmp.meeting.attendees.findIndex(function (a) {
+	      return a.id === e.target.id;
+	    });
+	    tmp.meeting.attendees.splice(index, 1);
 	    this.setState(tmp);
 	  },
 
@@ -24913,7 +24924,7 @@
 	          handle: this.handleDate }),
 	        _react2.default.createElement(_components.AttendeeList, { attendees: this.state.meeting.attendees,
 	          handle: this.handleAttendee, handleAdd: this.handleAdd,
-	          handleCat: this.handleAttendeeCat }),
+	          handleCat: this.handleAttendeeCat, handleDel: this.handleDel }),
 	        _react2.default.createElement(
 	          _reactBootstrap.Button,
 	          {
@@ -56271,7 +56282,6 @@
 	    var attendees = this.props.attendees.map(function (attendee, i) {
 	      return _react2.default.createElement(Attendee, _extends({ attendee: attendee, key: i }, this.props));
 	    }.bind(this));
-	    console.log(attendees);
 	    return _react2.default.createElement(
 	      'div',
 	      null,
@@ -56297,14 +56307,15 @@
 	  render: function render() {
 	    var delBox = _react2.default.createElement(
 	      'span',
-	      { className: 'input-group-btn',
-	        onClick: '' },
+	      { className: 'input-group-btn' },
 	      _react2.default.createElement(
 	        _reactBootstrap.Button,
-	        null,
+	        { onClick: this.props.handleDel,
+	          id: this.props.attendee.id },
 	        '✕'
 	      )
 	    );
+	    console.log(this.props.attendee);
 	    var typeBox = _react2.default.createElement(
 	      'span',
 	      { className: 'input-group-btn' },
