@@ -126,13 +126,17 @@ var MeetingForm = React.createClass({
     var attendeeIndex = instance.attendance.findIndex(function(a) {
       return a === e.target.id;
     });
-    console.log(attendeeIndex);
     if (attendeeIndex >= 0) {
       instance.attendance.splice(attendeeIndex, 1);
     } else {
       instance.attendance.push(e.target.id);
     }
-    tmp.meeting.instances[instanceIndex] = instance;
+    if (instanceIndex >= 0) {
+      tmp.meeting.instances[instanceIndex] = instance;
+    } else {
+      tmp.meeting.instances.push(instance);
+    }
+    console.log(tmp.meeting.instances);
     this.setState(tmp);
   },
 

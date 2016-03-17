@@ -24902,13 +24902,17 @@
 	    var attendeeIndex = instance.attendance.findIndex(function (a) {
 	      return a === e.target.id;
 	    });
-	    console.log(attendeeIndex);
 	    if (attendeeIndex >= 0) {
 	      instance.attendance.splice(attendeeIndex, 1);
 	    } else {
 	      instance.attendance.push(e.target.id);
 	    }
-	    tmp.meeting.instances[instanceIndex] = instance;
+	    if (instanceIndex >= 0) {
+	      tmp.meeting.instances[instanceIndex] = instance;
+	    } else {
+	      tmp.meeting.instances.push(instance);
+	    }
+	    console.log(tmp.meeting.instances);
 	    this.setState(tmp);
 	  },
 
@@ -56351,7 +56355,6 @@
 	  displayName: 'Attendee',
 
 	  render: function render() {
-	    console.log(this.props.instance);
 	    var checked = this.props.instance.attendance.find(function (a) {
 	      return a === this.props.attendee.id;
 	    }.bind(this));
@@ -56377,6 +56380,12 @@
 	          id: this.props.attendee.id },
 	        _react2.default.createElement(
 	          _reactBootstrap.MenuItem,
+	          { onClick: this.props.handleCat, key: '0',
+	            id: this.props.attendee.id },
+	          'None'
+	        ),
+	        _react2.default.createElement(
+	          _reactBootstrap.MenuItem,
 	          { onClick: this.props.handleCat, key: '1',
 	            id: this.props.attendee.id },
 	          'Student'
@@ -56391,7 +56400,7 @@
 	          _reactBootstrap.MenuItem,
 	          { onClick: this.props.handleCat, key: '3',
 	            id: this.props.attendee.id },
-	          'None'
+	          'Full-time'
 	        )
 	      ),
 	      _react2.default.createElement(

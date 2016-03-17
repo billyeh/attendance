@@ -29,7 +29,6 @@ var AttendeeList = React.createClass({
 
 var Attendee = React.createClass({
   render: function() {
-    console.log(this.props.instance);
     var checked = this.props.instance.attendance.find(function(a) {
       return a === this.props.attendee.id;
     }.bind(this));
@@ -48,12 +47,14 @@ var Attendee = React.createClass({
         <DropdownButton className="btn-large"
           title={this.props.attendee.category}
           id={this.props.attendee.id}>
+          <MenuItem onClick={this.props.handleCat} key="0"
+            id={this.props.attendee.id}>None</MenuItem>
           <MenuItem onClick={this.props.handleCat} key="1"
             id={this.props.attendee.id}>Student</MenuItem>
           <MenuItem onClick={this.props.handleCat} key="2"
             id={this.props.attendee.id}>New One</MenuItem>
           <MenuItem onClick={this.props.handleCat} key="3"
-            id={this.props.attendee.id}>None</MenuItem>
+            id={this.props.attendee.id}>Full-time</MenuItem>
         </DropdownButton>
         <Button onClick={this.props.handleCheck}
           bsStyle={checkStyle}
