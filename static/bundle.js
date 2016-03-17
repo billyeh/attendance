@@ -57054,7 +57054,7 @@
 
 
 	// module
-	exports.push([module.id, "input.datepicker__input.form-control {\n  background-color: #fff;\n}\n\n", ""]);
+	exports.push([module.id, "input.datepicker__input.form-control {\n  background-color: #fff;\n}\n\nbutton.dropdown-toggle.btn-large.btn.btn-default {\n  width: 10rem;\n}\n", ""]);
 
 	// exports
 

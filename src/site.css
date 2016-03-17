@@ -2,3 +2,6 @@ input.datepicker__input.form-control {
   background-color: #fff;
 }
 
+button.dropdown-toggle.btn-large.btn.btn-default {
+  width: 10rem;
+}
