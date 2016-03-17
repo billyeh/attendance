@@ -99,6 +99,11 @@ var MeetingForm = React.createClass({
 
   handleDel: function(e) {
     e.preventDefault();
+    var c = confirm("Are you sure you want to delete this attendee? \
+      Their attendance record will be lost as well.");
+    if (!c) {
+      return;
+    }
     var tmp = this.state;
     var index = tmp.meeting.attendees.findIndex(function(a) {
       return a.id === e.target.id

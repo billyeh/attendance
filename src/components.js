@@ -31,7 +31,7 @@ var Attendee = React.createClass({
   render: function() {
     var delBox = (
       <span className="input-group-btn">
-        <Button onClick={this.props.handleDel}
+        <Button onClick={this.props.handleDel} bsStyle="danger"
           id={this.props.attendee.id}>
           &#10005;
         </Button>

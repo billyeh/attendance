@@ -24875,6 +24875,11 @@
 
 	  handleDel: function handleDel(e) {
 	    e.preventDefault();
+	    var c = confirm("Are you sure you want to delete this attendee? \
+	      Their attendance record will be lost as well.");
+	    if (!c) {
+	      return;
+	    }
 	    var tmp = this.state;
 	    var index = tmp.meeting.attendees.findIndex(function (a) {
 	      return a.id === e.target.id;
@@ -56310,7 +56315,7 @@
 	      { className: 'input-group-btn' },
 	      _react2.default.createElement(
 	        _reactBootstrap.Button,
-	        { onClick: this.props.handleDel,
+	        { onClick: this.props.handleDel, bsStyle: 'danger',
 	          id: this.props.attendee.id },
 	        '✕'
 	      )
