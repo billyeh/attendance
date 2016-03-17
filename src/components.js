@@ -50,11 +50,17 @@ var Attendee = React.createClass({
           <MenuItem onClick={this.props.handleCat} key="0"
             id={this.props.attendee.id}>None</MenuItem>
           <MenuItem onClick={this.props.handleCat} key="1"
-            id={this.props.attendee.id}>Student</MenuItem>
+            id={this.props.attendee.id}>College</MenuItem>
           <MenuItem onClick={this.props.handleCat} key="2"
             id={this.props.attendee.id}>New One</MenuItem>
           <MenuItem onClick={this.props.handleCat} key="3"
             id={this.props.attendee.id}>Full-time</MenuItem>
+          <MenuItem onClick={this.props.handleCat} key="4"
+            id={this.props.attendee.id}>Visitor</MenuItem>
+          <MenuItem onClick={this.props.handleCat} key="5"
+            id={this.props.attendee.id}>Community</MenuItem>
+          <MenuItem onClick={this.props.handleCat} key="6"
+            id={this.props.attendee.id}>YP</MenuItem>
         </DropdownButton>
         <Button onClick={this.props.handleCheck}
           bsStyle={checkStyle}

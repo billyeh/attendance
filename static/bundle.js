@@ -56552,7 +56552,7 @@
 	          _reactBootstrap.MenuItem,
 	          { onClick: this.props.handleCat, key: '1',
 	            id: this.props.attendee.id },
-	          'Student'
+	          'College'
 	        ),
 	        _react2.default.createElement(
 	          _reactBootstrap.MenuItem,
@@ -56565,6 +56565,24 @@
 	          { onClick: this.props.handleCat, key: '3',
 	            id: this.props.attendee.id },
 	          'Full-time'
+	        ),
+	        _react2.default.createElement(
+	          _reactBootstrap.MenuItem,
+	          { onClick: this.props.handleCat, key: '4',
+	            id: this.props.attendee.id },
+	          'Visitor'
+	        ),
+	        _react2.default.createElement(
+	          _reactBootstrap.MenuItem,
+	          { onClick: this.props.handleCat, key: '5',
+	            id: this.props.attendee.id },
+	          'Community'
+	        ),
+	        _react2.default.createElement(
+	          _reactBootstrap.MenuItem,
+	          { onClick: this.props.handleCat, key: '6',
+	            id: this.props.attendee.id },
+	          'YP'
 	        )
 	      ),
 	      _react2.default.createElement(
