@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/attendance');
+mongoose.connect('mongodb://104.197.250.97:80/attendance');
 
 var Meeting = mongoose.model('Meeting', {
   category: String,
