@@ -16,8 +16,7 @@ var DeleteMeeting = React.createClass({
 
   handleDelete: function(e) {
     e.preventDefault();
-    var yes = confirm("Are you sure you want to delete this meeting, \
-      including any data stored with it?");
+    var yes = confirm("Are you sure you want to delete this meeting, including any data stored with it?");
     if (!yes) {
       return;
     }
@@ -141,9 +140,29 @@ var MeetingLocality = React.createClass({
 
 var MeetingCategory = React.createClass({
   render: function() {
+    var options = ['Other', 'Prayer Meeting', 'Lord\'s Table Meeting', 
+      'Small Group Meeting'];
+    var optionItems = options.map(function(o) {
+      return (
+        <option selected={o === this.props.category}>
+          {o}
+        </option>
+      );
+    }.bind(this));
     return (
-      <Input type="text" name="category" placeholder="Category"
-        value={this.props.category} onChange={this.props.handle}/>
+      <select className="form-group form-control"
+        onChange={this.props.handle}>
+        {optionItems}
+      </select>
+    );
+  }
+});
+
+var MeetingName = React.createClass({
+  render: function() {
+    return (
+      <Input type="text" name="name" placeholder="Display Name"
+        value={this.props.name} onChange={this.props.handle}/>
     );
   }
 });
@@ -155,7 +174,8 @@ var MeetingAdd = React.createClass({
     e.preventDefault();
     this.addMeeting(
       {
-        category: "Untitled Meeting",
+        name: "Untitled Meeting",
+        category: "Other",
         locality: "",
         attendees: [],
         instances: []
@@ -202,7 +222,7 @@ var MeetingListItem = React.createClass({
       <Link to={"/meetings/" + this.props.data._id}>
         <div>
           <h4>
-            <DeleteMeeting id={this.props.data._id}/> {this.props.data.category}
+            <DeleteMeeting id={this.props.data._id}/> {this.props.data.name}
           </h4>
         </div>
       </Link>
@@ -213,6 +233,7 @@ var MeetingListItem = React.createClass({
 module.exports.MeetingAdd = MeetingAdd;
 module.exports.MeetingList = MeetingList;
 
+module.exports.MeetingName = MeetingName;
 module.exports.MeetingCategory = MeetingCategory;
 module.exports.MeetingLocality = MeetingLocality;
 module.exports.MeetingDate = MeetingDate;

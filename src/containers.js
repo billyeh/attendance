@@ -9,6 +9,7 @@ import {
 import {
   MeetingAdd, 
   MeetingList, 
+  MeetingName,
   MeetingCategory,
   MeetingLocality,
   MeetingDate,
@@ -43,7 +44,8 @@ var MeetingForm = React.createClass({
     return {
       meeting: {
         _id: this.props.params.id,
-        category: "",
+        name: "Untitled Meeting",
+        category: "Other",
         locality: "",
         attendees: [],
         instances: []
@@ -57,9 +59,16 @@ var MeetingForm = React.createClass({
     }.bind(this));
   },
 
-  handleCategory: function(e) { 
+  handleCategory: function(e) {
     var tmp = this.state;
-    tmp.meeting.category = e.target.value;
+    tmp.meeting.category = $(e.target).val();
+    console.log(tmp);
+    this.setState(tmp);
+  },
+
+  handleName: function(e) { 
+    var tmp = this.state;
+    tmp.meeting.name= e.target.value;
     this.setState(tmp);
   },
 
@@ -184,8 +193,10 @@ var MeetingForm = React.createClass({
       <div>
         <h4>Meeting Information</h4>
         <form className="form-group" name="meetingAdd">
+          <MeetingName name={this.state.meeting.name}
+            handle={this.handleName}/>
           <MeetingCategory category={this.state.meeting.category}
-            handle={this.handleCategory}/>
+            handle={this.handleCategory} />
           <MeetingLocality locality={this.state.meeting.locality}
             handle={this.handleLocality}/>
           <MeetingDate date={this.getDate()}

@@ -24816,7 +24816,8 @@
 	    return {
 	      meeting: {
 	        _id: this.props.params.id,
-	        category: "",
+	        name: "Untitled Meeting",
+	        category: "Other",
 	        locality: "",
 	        attendees: [],
 	        instances: []
@@ -24832,7 +24833,14 @@
 
 	  handleCategory: function handleCategory(e) {
 	    var tmp = this.state;
-	    tmp.meeting.category = e.target.value;
+	    tmp.meeting.category = $(e.target).val();
+	    console.log(tmp);
+	    this.setState(tmp);
+	  },
+
+	  handleName: function handleName(e) {
+	    var tmp = this.state;
+	    tmp.meeting.name = e.target.value;
 	    this.setState(tmp);
 	  },
 
@@ -24962,6 +24970,8 @@
 	      _react2.default.createElement(
 	        'form',
 	        { className: 'form-group', name: 'meetingAdd' },
+	        _react2.default.createElement(_components.MeetingName, { name: this.state.meeting.name,
+	          handle: this.handleName }),
 	        _react2.default.createElement(_components.MeetingCategory, { category: this.state.meeting.category,
 	          handle: this.handleCategory }),
 	        _react2.default.createElement(_components.MeetingLocality, { locality: this.state.meeting.locality,
@@ -56509,8 +56519,7 @@
 
 	  handleDelete: function handleDelete(e) {
 	    e.preventDefault();
-	    var yes = confirm("Are you sure you want to delete this meeting, \
-	      including any data stored with it?");
+	    var yes = confirm("Are you sure you want to delete this meeting, including any data stored with it?");
 	    if (!yes) {
 	      return;
 	    }
@@ -56654,8 +56663,29 @@
 	  displayName: 'MeetingCategory',
 
 	  render: function render() {
-	    return _react2.default.createElement(_reactBootstrap.Input, { type: 'text', name: 'category', placeholder: 'Category',
-	      value: this.props.category, onChange: this.props.handle });
+	    var options = ['Other', 'Prayer Meeting', 'Lord\'s Table Meeting', 'Small Group Meeting'];
+	    var optionItems = options.map(function (o) {
+	      return _react2.default.createElement(
+	        'option',
+	        { selected: o === this.props.category },
+	        o
+	      );
+	    }.bind(this));
+	    return _react2.default.createElement(
+	      'select',
+	      { className: 'form-group form-control',
+	        onChange: this.props.handle },
+	      optionItems
+	    );
+	  }
+	});
+
+	var MeetingName = _react2.default.createClass({
+	  displayName: 'MeetingName',
+
+	  render: function render() {
+	    return _react2.default.createElement(_reactBootstrap.Input, { type: 'text', name: 'name', placeholder: 'Display Name',
+	      value: this.props.name, onChange: this.props.handle });
 	  }
 	});
 
@@ -56667,7 +56697,8 @@
 	  handleClick: function handleClick(e) {
 	    e.preventDefault();
 	    this.addMeeting({
-	      category: "Untitled Meeting",
+	      name: "Untitled Meeting",
+	      category: "Other",
 	      locality: "",
 	      attendees: [],
 	      instances: []
@@ -56721,7 +56752,7 @@
 	          null,
 	          _react2.default.createElement(DeleteMeeting, { id: this.props.data._id }),
 	          ' ',
-	          this.props.data.category
+	          this.props.data.name
 	        )
 	      )
 	    );
@@ -56731,6 +56762,7 @@
 	module.exports.MeetingAdd = MeetingAdd;
 	module.exports.MeetingList = MeetingList;
 
+	module.exports.MeetingName = MeetingName;
 	module.exports.MeetingCategory = MeetingCategory;
 	module.exports.MeetingLocality = MeetingLocality;
 	module.exports.MeetingDate = MeetingDate;

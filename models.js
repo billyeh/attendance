@@ -5,7 +5,8 @@ mongoose.connect(process.env.NODE_ENV === 'production' ? dbString :
  'mongodb://localhost/attendance');
 
 var Meeting = mongoose.model('Meeting', {
-  category: String,
+  category: {type: String, default: 'Other'},
+  name: {type: String, default: 'Untitled Meeting'},
   locality: String,
   attendees: [{
     id: {type: mongoose.Schema.Types.ObjectId, default: mongoose.Types.ObjectId},
