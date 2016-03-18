@@ -11,6 +11,9 @@ import {
   DeleteMeetingMixin
 } from './util.js';
 
+var OPTIONS = ['Other', 'Prayer Meeting', 'Lord\'s Table Meeting', 
+  'Small Group Meeting'];
+ 
 var DeleteMeeting = React.createClass({
   mixins: [DeleteMeetingMixin],
 
@@ -140,9 +143,7 @@ var MeetingLocality = React.createClass({
 
 var MeetingCategory = React.createClass({
   render: function() {
-    var options = ['Other', 'Prayer Meeting', 'Lord\'s Table Meeting', 
-      'Small Group Meeting'];
-    var optionItems = options.map(function(o) {
+    var optionItems = OPTIONS.map(function(o) {
       return (
         <option selected={o === this.props.category}>
           {o}
@@ -193,10 +194,37 @@ var MeetingAdd = React.createClass({
   render: function() {
     return (
       <Button 
-        className="btn-primary btn-raised" block 
+        className="btn-primary btn-raised" block bsSize="large"
         onClick={this.handleClick}>
         Add Meeting
       </Button>
+    );
+  }
+});
+
+var MeetingTypes = React.createClass({
+  handleClick: function(e) {
+    e.preventDefault();
+    this.context.router.push("/meeting/" +  e.target.innerHTML);
+  },
+
+  contextTypes: {
+    router: React.PropTypes.object
+  },
+
+  render: function() {
+    var buttons = OPTIONS.map(function(o) {
+      return (
+        <Button onClick={this.handleClick} block bsSize="large">
+          {o}
+        </Button>
+      );
+    }.bind(this));
+    return (
+      <div>
+        {buttons}
+        <MeetingAdd />
+      </div>
     );
   }
 });
@@ -232,6 +260,7 @@ var MeetingListItem = React.createClass({
 
 module.exports.MeetingAdd = MeetingAdd;
 module.exports.MeetingList = MeetingList;
+module.exports.MeetingTypes = MeetingTypes;
 
 module.exports.MeetingName = MeetingName;
 module.exports.MeetingCategory = MeetingCategory;

@@ -9,6 +9,7 @@ import {
 import {
   MeetingAdd, 
   MeetingList, 
+  MeetingTypes,
   MeetingName,
   MeetingCategory,
   MeetingLocality,
@@ -28,10 +29,12 @@ var MeetingBox = React.createClass({
   },
 
   render: function() {
+    var filteredMeetings = this.state.meetings.filter(function(m) {
+      return m.category === this.props.params.type;
+    }.bind(this));
     return (
       <div>
-        <MeetingList data={this.state.meetings}/>
-        <MeetingAdd/>
+        <MeetingList data={filteredMeetings}/>
       </div>
     );
   },
