@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
+var dbString = require('./config').mongodbString;
 
-mongoose.connect('mongodb://104.197.250.97:80/attendance');
+mongoose.connect(process.env.NODE_ENV === 'production' ? dbString :
+ 'mongodb://localhost/attendance');
 
 var Meeting = mongoose.model('Meeting', {
   category: String,
