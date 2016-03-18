@@ -9,5 +9,6 @@
 * hide meeting information part of form
 * reuse data from home page to meeting
 * real-time updates
+* clone meeting
 
 ###displaying the collected data
