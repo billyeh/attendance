@@ -6,6 +6,9 @@
 * enter count of attendance instead of per-person
 * importing attendees
 * filter attendees by typing
+* hide meeting information part of form
+* reuse data from home page to meeting
 * real-time updates
+* clone meeting
 
 ###displaying the collected data
