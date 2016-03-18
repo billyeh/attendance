@@ -6,7 +6,38 @@ import {Link} from 'react-router';
 
 require('react-datepicker/dist/react-datepicker.css');
 
-import {UpsertMeetingMixin} from './util.js';
+import {
+  UpsertMeetingMixin,
+  DeleteMeetingMixin
+} from './util.js';
+
+var DeleteMeeting = React.createClass({
+  mixins: [DeleteMeetingMixin],
+
+  handleDelete: function(e) {
+    e.preventDefault();
+    var yes = confirm("Are you sure you want to delete this meeting, \
+      including any data stored with it?");
+    if (!yes) {
+      return;
+    }
+    this.delMeeting(this.props.id, function(data) {
+      location.reload();
+    }.bind(this));
+  },
+
+  contextTypes: {
+    router: React.PropTypes.object
+  },
+
+  render: function() {
+    return (
+      <Button bsSize="small" bsStyle="danger" onClick={this.handleDelete}>
+        &#10005;
+      </Button>
+    );
+  }
+});
 
 var AttendeeList = React.createClass({
   render: function() {
@@ -171,7 +202,7 @@ var MeetingListItem = React.createClass({
       <Link to={"/meetings/" + this.props.data._id}>
         <div>
           <h4>
-            {this.props.data.category}
+            <DeleteMeeting id={this.props.data._id}/> {this.props.data.category}
           </h4>
         </div>
       </Link>

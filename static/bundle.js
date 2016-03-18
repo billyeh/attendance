@@ -24801,8 +24801,8 @@
 	    return _react2.default.createElement(
 	      'div',
 	      null,
-	      _react2.default.createElement(_components.MeetingAdd, null),
-	      _react2.default.createElement(_components.MeetingList, { data: this.state.meetings })
+	      _react2.default.createElement(_components.MeetingList, { data: this.state.meetings }),
+	      _react2.default.createElement(_components.MeetingAdd, null)
 	    );
 	  }
 	});
@@ -56457,7 +56457,20 @@
 	  }
 	};
 
+	var DeleteMeetingMixin = {
+	  delMeeting: function delMeeting(id, callback) {
+	    $.ajax({
+	      type: 'DELETE', url: '/api/meetings/' + id,
+	      success: callback.bind(this),
+	      error: function error(xhr, status, err) {
+	        console.log("Error deleting meeting: ", err);
+	      }
+	    });
+	  }
+	};
+
 	module.exports.UpsertMeetingMixin = UpsertMeetingMixin;
+	module.exports.DeleteMeetingMixin = DeleteMeetingMixin;
 
 /***/ },
 /* 564 */
@@ -56488,6 +56501,36 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	__webpack_require__(567);
+
+	var DeleteMeeting = _react2.default.createClass({
+	  displayName: 'DeleteMeeting',
+
+	  mixins: [_util.DeleteMeetingMixin],
+
+	  handleDelete: function handleDelete(e) {
+	    e.preventDefault();
+	    var yes = confirm("Are you sure you want to delete this meeting, \
+	      including any data stored with it?");
+	    if (!yes) {
+	      return;
+	    }
+	    this.delMeeting(this.props.id, function (data) {
+	      location.reload();
+	    }.bind(this));
+	  },
+
+	  contextTypes: {
+	    router: _react2.default.PropTypes.object
+	  },
+
+	  render: function render() {
+	    return _react2.default.createElement(
+	      _reactBootstrap.Button,
+	      { bsSize: 'small', bsStyle: 'danger', onClick: this.handleDelete },
+	      '✕'
+	    );
+	  }
+	});
 
 	var AttendeeList = _react2.default.createClass({
 	  displayName: 'AttendeeList',
@@ -56676,6 +56719,8 @@
 	        _react2.default.createElement(
 	          'h4',
 	          null,
+	          _react2.default.createElement(DeleteMeeting, { id: this.props.data._id }),
+	          ' ',
 	          this.props.data.category
 	        )
 	      )

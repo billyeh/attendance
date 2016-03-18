@@ -11,5 +11,17 @@ var UpsertMeetingMixin = {
   }
 };
 
-module.exports.UpsertMeetingMixin = UpsertMeetingMixin;
+var DeleteMeetingMixin = {
+  delMeeting: function(id, callback) {
+    $.ajax({
+      type: 'DELETE', url: '/api/meetings/' + id,
+      success: callback.bind(this),
+      error: function(xhr, status, err) {
+        console.log("Error deleting meeting: ", err);
+      }
+    });
+  }
+};
 
+module.exports.UpsertMeetingMixin = UpsertMeetingMixin;
+module.exports.DeleteMeetingMixin = DeleteMeetingMixin;

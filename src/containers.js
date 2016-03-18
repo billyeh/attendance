@@ -3,8 +3,11 @@ import moment from 'moment-timezone';
 import ObjectID from 'bson-objectid';
 import {Button, Input, DropdownButton, MenuItem} from 'react-bootstrap';
 
-import {UpsertMeetingMixin} from './util.js';
-import {MeetingAdd, 
+import {
+  UpsertMeetingMixin
+} from './util.js';
+import {
+  MeetingAdd, 
   MeetingList, 
   MeetingCategory,
   MeetingLocality,
@@ -26,8 +29,8 @@ var MeetingBox = React.createClass({
   render: function() {
     return (
       <div>
-        <MeetingAdd/>
         <MeetingList data={this.state.meetings}/>
+        <MeetingAdd/>
       </div>
     );
   },

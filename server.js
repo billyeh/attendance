@@ -8,6 +8,11 @@ var Meeting = require('./models').Meeting;
 var app = express();
 app.use(express.static('static'));
 app.use(bodyParser.json());
+app.delete('/api/meetings/:id', function(req, res) {
+  Meeting.remove({_id: req.params.id}, function(err, docs) {
+    res.status(200).send('deleted');
+  });
+});
 app.get('/api/meetings/:id', function(req, res) {
   var meeting = Meeting.find({_id: req.params.id}, function(err, docs) {
     try {
