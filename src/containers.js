@@ -202,14 +202,13 @@ var MeetingForm = React.createClass({
             handle={this.handleCategory} />
           <MeetingLocality locality={this.state.meeting.locality}
             handle={this.handleLocality}/>
-          <MeetingDate date={this.getDate()}
-            handle={this.handleDate}/>
           <AttendeeList 
+            date={this.getDate()}
             attendees={this.state.meeting.attendees} 
             instance={this.getInstance()}
             handle={this.handleAttendee} handleAdd={this.handleAdd}
             handleCat={this.handleAttendeeCat} handleDel={this.handleDel}
-            handleCheck={this.handleCheck}
+            handleCheck={this.handleCheck} handleDate={this.handleDate}
             />
           <Button 
             className="btn-primary btn-raised" block

@@ -54,6 +54,7 @@ var AttendeeList = React.createClass({
             Add
           </Button>
         </h4>
+        <MeetingDate date={this.props.date} handle={this.props.handleDate} />
         {attendees}
       </div>
     );

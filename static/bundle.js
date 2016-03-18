@@ -24981,14 +24981,13 @@
 	          handle: this.handleCategory }),
 	        _react2.default.createElement(_components.MeetingLocality, { locality: this.state.meeting.locality,
 	          handle: this.handleLocality }),
-	        _react2.default.createElement(_components.MeetingDate, { date: this.getDate(),
-	          handle: this.handleDate }),
 	        _react2.default.createElement(_components.AttendeeList, {
+	          date: this.getDate(),
 	          attendees: this.state.meeting.attendees,
 	          instance: this.getInstance(),
 	          handle: this.handleAttendee, handleAdd: this.handleAdd,
 	          handleCat: this.handleAttendeeCat, handleDel: this.handleDel,
-	          handleCheck: this.handleCheck
+	          handleCheck: this.handleCheck, handleDate: this.handleDate
 	        }),
 	        _react2.default.createElement(
 	          _reactBootstrap.Button,
@@ -56569,6 +56568,7 @@
 	          'Add'
 	        )
 	      ),
+	      _react2.default.createElement(MeetingDate, { date: this.props.date, handle: this.props.handleDate }),
 	      attendees
 	    );
 	  }
