@@ -80,6 +80,7 @@
 	          'Attendance'
 	        )
 	      ),
+	      _react2.default.createElement('hr', null),
 	      this.props.children
 	    );
 	  }
@@ -56741,10 +56742,10 @@
 	  },
 
 	  render: function render() {
-	    var buttons = OPTIONS.map(function (o) {
+	    var buttons = OPTIONS.map(function (o, i) {
 	      return _react2.default.createElement(
 	        _reactBootstrap.Button,
-	        { onClick: this.handleClick, block: true, bsSize: 'large' },
+	        { key: i, onClick: this.handleClick, block: true, bsSize: 'large' },
 	        o
 	      );
 	    }.bind(this));
@@ -56789,7 +56790,8 @@
 	          ' ',
 	          this.props.data.name
 	        )
-	      )
+	      ),
+	      _react2.default.createElement('hr', { style: { borderColor: "#eee" } })
 	    );
 	  }
 	});

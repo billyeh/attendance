@@ -214,9 +214,9 @@ var MeetingTypes = React.createClass({
   },
 
   render: function() {
-    var buttons = OPTIONS.map(function(o) {
+    var buttons = OPTIONS.map(function(o, i) {
       return (
-        <Button onClick={this.handleClick} block bsSize="large">
+        <Button key={i} onClick={this.handleClick} block bsSize="large">
           {o}
         </Button>
       );
@@ -254,6 +254,7 @@ var MeetingListItem = React.createClass({
             <DeleteMeeting id={this.props.data._id}/> {this.props.data.name}
           </h4>
         </div>
+        <hr style={{borderColor: "#eee"}}/>
       </Link>
     );
   }

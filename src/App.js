@@ -14,6 +14,7 @@ var App = React.createClass({
         <Link to="/">
           <h1>Attendance</h1>
         </Link>
+        <hr />
       {this.props.children}
       </div>
     );
