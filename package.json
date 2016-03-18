@@ -8,6 +8,10 @@
   },
   "author": "",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/billyeh/attendance.git"
+  },
   "dependencies": {
     "mongoose": "^4.4.6",
     "body-parser": "^1.15.0",
