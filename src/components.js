@@ -13,7 +13,53 @@ import {
 
 var OPTIONS = ['Other', 'Prayer Meeting', 'Lord\'s Table Meeting', 
   'Small Group Meeting'];
- 
+
+var signup = React.createClass({
+  render: function() {
+    return (
+      <div>
+        <h1>Sign Up</h1>
+        <form action="/signup" method="post">
+          <div>
+            <label>Username:</label>
+            <input type="text" name="username"/>
+          </div>
+          <div>
+            <label>Password:</label>
+            <input type="password" name="password"/>
+          </div>
+          <div>
+            <input type="submit" value="Sign Up"/>
+          </div>
+        </form>
+      </div>
+    );
+  }
+})
+
+var login = React.createClass({
+  render: function() {
+    return (
+      <div>
+        <h1>Log In</h1>
+        <form action="/login" method="post">
+          <div>
+            <label>Username:</label>
+            <input type="text" name="username"/>
+          </div>
+          <div>
+            <label>Password:</label>
+            <input type="password" name="password"/>
+          </div>
+          <div>
+            <input type="submit" value="Log In"/>
+          </div>
+        </form>
+      </div>
+    );
+  }
+}); 
+
 var DeleteMeeting = React.createClass({
   mixins: [DeleteMeetingMixin],
 
@@ -279,3 +325,5 @@ module.exports.MeetingLocality = MeetingLocality;
 module.exports.MeetingDate = MeetingDate;
 module.exports.AttendeeList = AttendeeList;
 module.exports.AttendanceCount = AttendanceCount;
+module.exports.signup = signup;
+module.exports.login = login;

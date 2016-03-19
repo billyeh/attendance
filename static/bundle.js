@@ -94,7 +94,9 @@
 	    { path: '/', component: App },
 	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _components.MeetingTypes }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'meetings/:id', component: _containers.MeetingForm }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'meeting/:type', component: _containers.MeetingBox })
+	    _react2.default.createElement(_reactRouter.Route, { path: 'meeting/:type', component: _containers.MeetingBox }),
+	    _react2.default.createElement(_reactRouter.Route, { path: '/login', component: _components.login }),
+	    _react2.default.createElement(_reactRouter.Route, { path: '/signup', component: _components.signup })
 	  )
 	), document.getElementById('main'));
 
@@ -56541,6 +56543,96 @@
 
 	var OPTIONS = ['Other', 'Prayer Meeting', 'Lord\'s Table Meeting', 'Small Group Meeting'];
 
+	var signup = _react2.default.createClass({
+	  displayName: 'signup',
+
+	  render: function render() {
+	    return _react2.default.createElement(
+	      'div',
+	      null,
+	      _react2.default.createElement(
+	        'h1',
+	        null,
+	        'Sign Up'
+	      ),
+	      _react2.default.createElement(
+	        'form',
+	        { action: '/signup', method: 'post' },
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'label',
+	            null,
+	            'Username:'
+	          ),
+	          _react2.default.createElement('input', { type: 'text', name: 'username' })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'label',
+	            null,
+	            'Password:'
+	          ),
+	          _react2.default.createElement('input', { type: 'password', name: 'password' })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement('input', { type: 'submit', value: 'Sign Up' })
+	        )
+	      )
+	    );
+	  }
+	});
+
+	var login = _react2.default.createClass({
+	  displayName: 'login',
+
+	  render: function render() {
+	    return _react2.default.createElement(
+	      'div',
+	      null,
+	      _react2.default.createElement(
+	        'h1',
+	        null,
+	        'Log In'
+	      ),
+	      _react2.default.createElement(
+	        'form',
+	        { action: '/login', method: 'post' },
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'label',
+	            null,
+	            'Username:'
+	          ),
+	          _react2.default.createElement('input', { type: 'text', name: 'username' })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'label',
+	            null,
+	            'Password:'
+	          ),
+	          _react2.default.createElement('input', { type: 'password', name: 'password' })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement('input', { type: 'submit', value: 'Log In' })
+	        )
+	      )
+	    );
+	  }
+	});
+
 	var DeleteMeeting = _react2.default.createClass({
 	  displayName: 'DeleteMeeting',
 
@@ -56837,6 +56929,8 @@
 	module.exports.MeetingDate = MeetingDate;
 	module.exports.AttendeeList = AttendeeList;
 	module.exports.AttendanceCount = AttendanceCount;
+	module.exports.signup = signup;
+	module.exports.login = login;
 
 /***/ },
 /* 565 */

@@ -14,20 +14,38 @@ require('./src/config/passport')(passport);
 
 var app = express();
 
-app.use(express.static('static'));
 app.use(cookieParser());
 app.use(bodyParser.json());
-app.use(bodyParser());
-app.use(session({secret: 'secret'}));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(session({
+  secret: 'secret', 
+  resave: false,
+  saveUninitialized: false
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+app.use(auth);
+app.use(express.static('static'));
+
+function auth(req, res, next) {
+  console.log(req.url);
+  var staticFiles = ['/login', '/bootstrap.css', '/bundle.js'];
+  if (req.user || staticFiles.indexOf(req.url) >= 0) {
+    next();
+  } else {
+    res.redirect('/login');
+  }
+}
 
 app.delete('/api/meetings/:id', function(req, res) {
   Meeting.remove({_id: req.params.id}, function(err, docs) {
     res.status(200).send('deleted');
   });
 });
+
 app.get('/api/meetings/:id', function(req, res) {
   var meeting = Meeting.find({_id: req.params.id}, function(err, docs) {
     try {
@@ -37,11 +55,13 @@ app.get('/api/meetings/:id', function(req, res) {
     }
   });
 });
+
 app.get('/api/meetings', function(req, res) {
   var meetings = Meeting.find({}, function(err, docs) {
     res.json(docs);
   });
 });
+
 app.post('/api/meetings', function(req, res) {
   var id = req.body._id || new mongoose.mongo.ObjectID();
   delete req.body._id;
@@ -57,11 +77,6 @@ app.post('/api/meetings', function(req, res) {
     }
   );
 });
-app.get('*', function(req, res) {
-  res.sendFile(path.join(__dirname, 'static', 'index.html'));
-});
-
-// app.post('/login')
 
 app.post('/signup', passport.authenticate('local-signup', {
   successRedirect: '/login',
@@ -75,12 +90,14 @@ app.post('/login', passport.authenticate('local-login', {
   failureFlash: true
 }));
 
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated())
-    return next();
-  res.redirect('/login');
-}
+app.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect("/");
+});
 
+app.get('*', function(req, res) {
+  res.sendFile(path.join(__dirname, 'static', 'index.html'));
+});
 
 var server = app.listen(process.env.PORT || 3000, function () {
   var port = server.address().port;
