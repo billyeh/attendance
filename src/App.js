@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Router, Route, Link, IndexRoute, browserHistory} from 'react-router';
+import {Button} from 'react-bootstrap';
 
 require('./site.css');
 
@@ -8,11 +9,21 @@ import {MeetingForm, MeetingBox} from './containers.js';
 import {MeetingTypes, signup, login} from './components.js';
 
 var App = React.createClass({
+  contextTypes: {
+    router: React.PropTypes.object
+  },
+
   render: function() {
     return (
       <div>
         <a href="/">
-          <h1>Attendance</h1>
+          <h1>
+            Attendance
+            <a style={{fontSize: "2rem", marginTop: "1.2rem"}} 
+              className="pull-right" href="/logout">
+              Logout
+            </a>
+          </h1>
         </a>
         <hr />
       {this.props.children}

@@ -56,6 +56,8 @@
 
 	var _reactRouter = __webpack_require__(159);
 
+	var _reactBootstrap = __webpack_require__(321);
+
 	var _containers = __webpack_require__(216);
 
 	var _components = __webpack_require__(564);
@@ -67,6 +69,10 @@
 	var App = _react2.default.createClass({
 	  displayName: 'App',
 
+	  contextTypes: {
+	    router: _react2.default.PropTypes.object
+	  },
+
 	  render: function render() {
 	    return _react2.default.createElement(
 	      'div',
@@ -77,7 +83,13 @@
 	        _react2.default.createElement(
 	          'h1',
 	          null,
-	          'Attendance'
+	          'Attendance',
+	          _react2.default.createElement(
+	            'a',
+	            { style: { fontSize: "2rem", marginTop: "1.2rem" },
+	              className: 'pull-right', href: '/logout' },
+	            'Logout'
+	          )
 	        )
 	      ),
 	      _react2.default.createElement('hr', null),
