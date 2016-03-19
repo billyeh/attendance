@@ -11,13 +11,15 @@ import {
   DeleteMeetingMixin
 } from './util.js';
 
+var OPTIONS = ['Other', 'Prayer Meeting', 'Lord\'s Table Meeting', 
+  'Small Group Meeting'];
+ 
 var DeleteMeeting = React.createClass({
   mixins: [DeleteMeetingMixin],
 
   handleDelete: function(e) {
     e.preventDefault();
-    var yes = confirm("Are you sure you want to delete this meeting, \
-      including any data stored with it?");
+    var yes = confirm("Are you sure you want to delete this meeting, including any data stored with it?");
     if (!yes) {
       return;
     }
@@ -45,13 +47,14 @@ var AttendeeList = React.createClass({
       return (<Attendee attendee={attendee} key={i} {...this.props} />);
     }.bind(this));
     return (
-      <div>
+      <div className="form-group">
         <h4>Attendees
           <Button onClick={this.props.handleAdd}
             style={{marginLeft: "10px"}}>
             Add
           </Button>
         </h4>
+        <MeetingDate date={this.props.date} handle={this.props.handleDate} />
         {attendees}
       </div>
     );
@@ -141,9 +144,36 @@ var MeetingLocality = React.createClass({
 
 var MeetingCategory = React.createClass({
   render: function() {
+    var optionItems = OPTIONS.map(function(o) {
+      return (
+        <option key={o} selected={o === this.props.category}>
+          {o}
+        </option>
+      );
+    }.bind(this));
     return (
-      <Input type="text" name="category" placeholder="Category"
-        value={this.props.category} onChange={this.props.handle}/>
+      <select className="form-group form-control"
+        onChange={this.props.handle}>
+        {optionItems}
+      </select>
+    );
+  }
+});
+
+var MeetingName = React.createClass({
+  render: function() {
+    return (
+      <Input type="text" name="name" placeholder="Display Name"
+        value={this.props.name} onChange={this.props.handle}/>
+    );
+  }
+});
+
+var AttendanceCount = React.createClass({
+  render: function() {
+    return (
+      <Input className="form-group" placeholder="Attendance count (optional)"
+        value={this.props.count} type="number" onChange={this.props.handle} />
     );
   }
 });
@@ -155,7 +185,8 @@ var MeetingAdd = React.createClass({
     e.preventDefault();
     this.addMeeting(
       {
-        category: "Untitled Meeting",
+        name: "Untitled Meeting",
+        category: "Other",
         locality: "",
         attendees: [],
         instances: []
@@ -173,10 +204,37 @@ var MeetingAdd = React.createClass({
   render: function() {
     return (
       <Button 
-        className="btn-primary btn-raised" block 
+        className="btn-primary btn-raised" block bsSize="large"
         onClick={this.handleClick}>
         Add Meeting
       </Button>
+    );
+  }
+});
+
+var MeetingTypes = React.createClass({
+  handleClick: function(e) {
+    e.preventDefault();
+    this.context.router.push("/meeting/" +  e.target.innerHTML);
+  },
+
+  contextTypes: {
+    router: React.PropTypes.object
+  },
+
+  render: function() {
+    var buttons = OPTIONS.map(function(o, i) {
+      return (
+        <Button key={i} onClick={this.handleClick} block bsSize="large">
+          {o}
+        </Button>
+      );
+    }.bind(this));
+    return (
+      <div>
+        {buttons}
+        <MeetingAdd />
+      </div>
     );
   }
 });
@@ -202,9 +260,10 @@ var MeetingListItem = React.createClass({
       <Link to={"/meetings/" + this.props.data._id}>
         <div>
           <h4>
-            <DeleteMeeting id={this.props.data._id}/> {this.props.data.category}
+            <DeleteMeeting id={this.props.data._id}/> {this.props.data.name}
           </h4>
         </div>
+        <hr style={{borderColor: "#eee"}}/>
       </Link>
     );
   }
@@ -212,8 +271,11 @@ var MeetingListItem = React.createClass({
 
 module.exports.MeetingAdd = MeetingAdd;
 module.exports.MeetingList = MeetingList;
+module.exports.MeetingTypes = MeetingTypes;
 
+module.exports.MeetingName = MeetingName;
 module.exports.MeetingCategory = MeetingCategory;
 module.exports.MeetingLocality = MeetingLocality;
 module.exports.MeetingDate = MeetingDate;
 module.exports.AttendeeList = AttendeeList;
+module.exports.AttendanceCount = AttendanceCount;

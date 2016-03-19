@@ -58,6 +58,8 @@
 
 	var _containers = __webpack_require__(216);
 
+	var _components = __webpack_require__(564);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	__webpack_require__(571);
@@ -78,6 +80,7 @@
 	          'Attendance'
 	        )
 	      ),
+	      _react2.default.createElement('hr', null),
 	      this.props.children
 	    );
 	  }
@@ -89,8 +92,9 @@
 	  _react2.default.createElement(
 	    _reactRouter.Route,
 	    { path: '/', component: App },
-	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _containers.MeetingBox }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'meetings/:id', component: _containers.MeetingForm })
+	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _components.MeetingTypes }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'meetings/:id', component: _containers.MeetingForm }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'meeting/:type', component: _containers.MeetingBox })
 	  )
 	), document.getElementById('main'));
 
@@ -24798,11 +24802,13 @@
 	  },
 
 	  render: function render() {
+	    var filteredMeetings = this.state.meetings.filter(function (m) {
+	      return m.category === this.props.params.type;
+	    }.bind(this));
 	    return _react2.default.createElement(
 	      'div',
 	      null,
-	      _react2.default.createElement(_components.MeetingList, { data: this.state.meetings }),
-	      _react2.default.createElement(_components.MeetingAdd, null)
+	      _react2.default.createElement(_components.MeetingList, { data: filteredMeetings })
 	    );
 	  }
 	});
@@ -24816,7 +24822,8 @@
 	    return {
 	      meeting: {
 	        _id: this.props.params.id,
-	        category: "",
+	        name: "Untitled Meeting",
+	        category: "Other",
 	        locality: "",
 	        attendees: [],
 	        instances: []
@@ -24832,7 +24839,14 @@
 
 	  handleCategory: function handleCategory(e) {
 	    var tmp = this.state;
-	    tmp.meeting.category = e.target.value;
+	    tmp.meeting.category = $(e.target).val();
+	    console.log(tmp);
+	    this.setState(tmp);
+	  },
+
+	  handleName: function handleName(e) {
+	    var tmp = this.state;
+	    tmp.meeting.name = e.target.value;
 	    this.setState(tmp);
 	  },
 
@@ -24888,6 +24902,25 @@
 	    this.setState(tmp);
 	  },
 
+	  handleCount: function handleCount(e) {
+	    var tmp = this.state;
+	    var date = this.getDate();
+	    var instanceIndex = tmp.meeting.instances.findIndex(function (i) {
+	      return date.isSame(i.date, 'day');
+	    });
+	    var instance = { date: date, attendance: [] };
+	    if (instanceIndex >= 0) {
+	      instance = tmp.meeting.instances[instanceIndex];
+	    }
+	    instance.count = e.target.value;
+	    if (instanceIndex >= 0) {
+	      tmp.meeting.instances[instanceIndex] = instance;
+	    } else {
+	      tmp.meeting.instances.push(instance);
+	    }
+	    this.setState(tmp);
+	  },
+
 	  handleCheck: function handleCheck(e) {
 	    e.preventDefault();
 	    var tmp = this.state;
@@ -24912,7 +24945,6 @@
 	    } else {
 	      tmp.meeting.instances.push(instance);
 	    }
-	    console.log(tmp.meeting.instances);
 	    this.setState(tmp);
 	  },
 
@@ -24962,18 +24994,23 @@
 	      _react2.default.createElement(
 	        'form',
 	        { className: 'form-group', name: 'meetingAdd' },
+	        _react2.default.createElement(_components.MeetingName, { name: this.state.meeting.name,
+	          handle: this.handleName }),
 	        _react2.default.createElement(_components.MeetingCategory, { category: this.state.meeting.category,
 	          handle: this.handleCategory }),
 	        _react2.default.createElement(_components.MeetingLocality, { locality: this.state.meeting.locality,
 	          handle: this.handleLocality }),
-	        _react2.default.createElement(_components.MeetingDate, { date: this.getDate(),
-	          handle: this.handleDate }),
 	        _react2.default.createElement(_components.AttendeeList, {
+	          date: this.getDate(),
 	          attendees: this.state.meeting.attendees,
 	          instance: this.getInstance(),
 	          handle: this.handleAttendee, handleAdd: this.handleAdd,
 	          handleCat: this.handleAttendeeCat, handleDel: this.handleDel,
-	          handleCheck: this.handleCheck
+	          handleCheck: this.handleCheck, handleDate: this.handleDate
+	        }),
+	        _react2.default.createElement(_components.AttendanceCount, {
+	          count: this.getInstance().count || "",
+	          handle: this.handleCount
 	        }),
 	        _react2.default.createElement(
 	          _reactBootstrap.Button,
@@ -56502,6 +56539,8 @@
 
 	__webpack_require__(567);
 
+	var OPTIONS = ['Other', 'Prayer Meeting', 'Lord\'s Table Meeting', 'Small Group Meeting'];
+
 	var DeleteMeeting = _react2.default.createClass({
 	  displayName: 'DeleteMeeting',
 
@@ -56509,8 +56548,7 @@
 
 	  handleDelete: function handleDelete(e) {
 	    e.preventDefault();
-	    var yes = confirm("Are you sure you want to delete this meeting, \
-	      including any data stored with it?");
+	    var yes = confirm("Are you sure you want to delete this meeting, including any data stored with it?");
 	    if (!yes) {
 	      return;
 	    }
@@ -56541,7 +56579,7 @@
 	    }.bind(this));
 	    return _react2.default.createElement(
 	      'div',
-	      null,
+	      { className: 'form-group' },
 	      _react2.default.createElement(
 	        'h4',
 	        null,
@@ -56553,6 +56591,7 @@
 	          'Add'
 	        )
 	      ),
+	      _react2.default.createElement(MeetingDate, { date: this.props.date, handle: this.props.handleDate }),
 	      attendees
 	    );
 	  }
@@ -56654,8 +56693,37 @@
 	  displayName: 'MeetingCategory',
 
 	  render: function render() {
-	    return _react2.default.createElement(_reactBootstrap.Input, { type: 'text', name: 'category', placeholder: 'Category',
-	      value: this.props.category, onChange: this.props.handle });
+	    var optionItems = OPTIONS.map(function (o) {
+	      return _react2.default.createElement(
+	        'option',
+	        { key: o, selected: o === this.props.category },
+	        o
+	      );
+	    }.bind(this));
+	    return _react2.default.createElement(
+	      'select',
+	      { className: 'form-group form-control',
+	        onChange: this.props.handle },
+	      optionItems
+	    );
+	  }
+	});
+
+	var MeetingName = _react2.default.createClass({
+	  displayName: 'MeetingName',
+
+	  render: function render() {
+	    return _react2.default.createElement(_reactBootstrap.Input, { type: 'text', name: 'name', placeholder: 'Display Name',
+	      value: this.props.name, onChange: this.props.handle });
+	  }
+	});
+
+	var AttendanceCount = _react2.default.createClass({
+	  displayName: 'AttendanceCount',
+
+	  render: function render() {
+	    return _react2.default.createElement(_reactBootstrap.Input, { className: 'form-group', placeholder: 'Attendance count (optional)',
+	      value: this.props.count, type: 'number', onChange: this.props.handle });
 	  }
 	});
 
@@ -56667,7 +56735,8 @@
 	  handleClick: function handleClick(e) {
 	    e.preventDefault();
 	    this.addMeeting({
-	      category: "Untitled Meeting",
+	      name: "Untitled Meeting",
+	      category: "Other",
 	      locality: "",
 	      attendees: [],
 	      instances: []
@@ -56684,9 +56753,38 @@
 	    return _react2.default.createElement(
 	      _reactBootstrap.Button,
 	      {
-	        className: 'btn-primary btn-raised', block: true,
+	        className: 'btn-primary btn-raised', block: true, bsSize: 'large',
 	        onClick: this.handleClick },
 	      'Add Meeting'
+	    );
+	  }
+	});
+
+	var MeetingTypes = _react2.default.createClass({
+	  displayName: 'MeetingTypes',
+
+	  handleClick: function handleClick(e) {
+	    e.preventDefault();
+	    this.context.router.push("/meeting/" + e.target.innerHTML);
+	  },
+
+	  contextTypes: {
+	    router: _react2.default.PropTypes.object
+	  },
+
+	  render: function render() {
+	    var buttons = OPTIONS.map(function (o, i) {
+	      return _react2.default.createElement(
+	        _reactBootstrap.Button,
+	        { key: i, onClick: this.handleClick, block: true, bsSize: 'large' },
+	        o
+	      );
+	    }.bind(this));
+	    return _react2.default.createElement(
+	      'div',
+	      null,
+	      buttons,
+	      _react2.default.createElement(MeetingAdd, null)
 	    );
 	  }
 	});
@@ -56721,20 +56819,24 @@
 	          null,
 	          _react2.default.createElement(DeleteMeeting, { id: this.props.data._id }),
 	          ' ',
-	          this.props.data.category
+	          this.props.data.name
 	        )
-	      )
+	      ),
+	      _react2.default.createElement('hr', { style: { borderColor: "#eee" } })
 	    );
 	  }
 	});
 
 	module.exports.MeetingAdd = MeetingAdd;
 	module.exports.MeetingList = MeetingList;
+	module.exports.MeetingTypes = MeetingTypes;
 
+	module.exports.MeetingName = MeetingName;
 	module.exports.MeetingCategory = MeetingCategory;
 	module.exports.MeetingLocality = MeetingLocality;
 	module.exports.MeetingDate = MeetingDate;
 	module.exports.AttendeeList = AttendeeList;
+	module.exports.AttendanceCount = AttendanceCount;
 
 /***/ },
 /* 565 */

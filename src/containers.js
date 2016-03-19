@@ -9,10 +9,13 @@ import {
 import {
   MeetingAdd, 
   MeetingList, 
+  MeetingTypes,
+  MeetingName,
   MeetingCategory,
   MeetingLocality,
   MeetingDate,
-  AttendeeList
+  AttendeeList,
+  AttendanceCount
 } from './components.js';
 
 var MeetingBox = React.createClass({
@@ -27,10 +30,12 @@ var MeetingBox = React.createClass({
   },
 
   render: function() {
+    var filteredMeetings = this.state.meetings.filter(function(m) {
+      return m.category === this.props.params.type;
+    }.bind(this));
     return (
       <div>
-        <MeetingList data={this.state.meetings}/>
-        <MeetingAdd/>
+        <MeetingList data={filteredMeetings}/>
       </div>
     );
   },
@@ -43,7 +48,8 @@ var MeetingForm = React.createClass({
     return {
       meeting: {
         _id: this.props.params.id,
-        category: "",
+        name: "Untitled Meeting",
+        category: "Other",
         locality: "",
         attendees: [],
         instances: []
@@ -57,9 +63,16 @@ var MeetingForm = React.createClass({
     }.bind(this));
   },
 
-  handleCategory: function(e) { 
+  handleCategory: function(e) {
     var tmp = this.state;
-    tmp.meeting.category = e.target.value;
+    tmp.meeting.category = $(e.target).val();
+    console.log(tmp);
+    this.setState(tmp);
+  },
+
+  handleName: function(e) { 
+    var tmp = this.state;
+    tmp.meeting.name= e.target.value;
     this.setState(tmp);
   },
 
@@ -115,6 +128,25 @@ var MeetingForm = React.createClass({
     this.setState(tmp);
   },
 
+  handleCount: function(e) {
+    var tmp = this.state;
+    var date = this.getDate();
+    var instanceIndex = tmp.meeting.instances.findIndex(function(i) {
+      return date.isSame(i.date, 'day');
+    });
+    var instance = {date: date, attendance: []};
+    if (instanceIndex >= 0) {
+      instance = tmp.meeting.instances[instanceIndex];
+    }
+    instance.count = e.target.value;
+    if (instanceIndex >= 0) {
+      tmp.meeting.instances[instanceIndex] = instance;
+    } else {
+      tmp.meeting.instances.push(instance);
+    }
+    this.setState(tmp);
+  },
+
   handleCheck: function(e) {
     e.preventDefault();
     var tmp = this.state;
@@ -139,7 +171,6 @@ var MeetingForm = React.createClass({
     } else {
       tmp.meeting.instances.push(instance);
     }
-    console.log(tmp.meeting.instances);
     this.setState(tmp);
   },
 
@@ -184,19 +215,24 @@ var MeetingForm = React.createClass({
       <div>
         <h4>Meeting Information</h4>
         <form className="form-group" name="meetingAdd">
+          <MeetingName name={this.state.meeting.name}
+            handle={this.handleName}/>
           <MeetingCategory category={this.state.meeting.category}
-            handle={this.handleCategory}/>
+            handle={this.handleCategory} />
           <MeetingLocality locality={this.state.meeting.locality}
             handle={this.handleLocality}/>
-          <MeetingDate date={this.getDate()}
-            handle={this.handleDate}/>
           <AttendeeList 
+            date={this.getDate()}
             attendees={this.state.meeting.attendees} 
             instance={this.getInstance()}
             handle={this.handleAttendee} handleAdd={this.handleAdd}
             handleCat={this.handleAttendeeCat} handleDel={this.handleDel}
-            handleCheck={this.handleCheck}
-            />
+            handleCheck={this.handleCheck} handleDate={this.handleDate}
+          />
+          <AttendanceCount 
+            count={this.getInstance().count || ""}
+            handle={this.handleCount}
+          />
           <Button 
             className="btn-primary btn-raised" block
             type="submit" style={{marginTop: "15px"}}
