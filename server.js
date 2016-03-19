@@ -31,7 +31,6 @@ app.use(auth);
 app.use(express.static('static'));
 
 function auth(req, res, next) {
-  console.log(req.url);
   var staticFiles = ['/signup', '/login', '/bootstrap.css', '/bundle.js'];
   if (req.user || staticFiles.indexOf(req.url) >= 0) {
     next();
@@ -57,7 +56,7 @@ app.get('/api/meetings/:id', function(req, res) {
 });
 
 app.get('/api/meetings', function(req, res) {
-  var meetings = Meeting.find({}, function(err, docs) {
+  var meetings = Meeting.find({user: req.user._id}, function(err, docs) {
     res.json(docs);
   });
 });
@@ -66,6 +65,7 @@ app.post('/api/meetings', function(req, res) {
   var id = req.body._id || new mongoose.mongo.ObjectID();
   delete req.body._id;
   delete req.body.__v;
+  req.body.user = req.user._id;
   Meeting.findOneAndUpdate({_id: id}, req.body,
     {new: true, upsert: true},
     function(err, meeting) {
