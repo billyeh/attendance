@@ -15,6 +15,7 @@ var Meeting = mongoose.model('Meeting', {
   }],
   instances: [{
     date: Date,
+    count: {type: Number, default: 0},
     attendance: [String]
   }]
 });

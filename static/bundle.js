@@ -24902,6 +24902,25 @@
 	    this.setState(tmp);
 	  },
 
+	  handleCount: function handleCount(e) {
+	    var tmp = this.state;
+	    var date = this.getDate();
+	    var instanceIndex = tmp.meeting.instances.findIndex(function (i) {
+	      return date.isSame(i.date, 'day');
+	    });
+	    var instance = { date: date, attendance: [] };
+	    if (instanceIndex >= 0) {
+	      instance = tmp.meeting.instances[instanceIndex];
+	    }
+	    instance.count = e.target.value;
+	    if (instanceIndex >= 0) {
+	      tmp.meeting.instances[instanceIndex] = instance;
+	    } else {
+	      tmp.meeting.instances.push(instance);
+	    }
+	    this.setState(tmp);
+	  },
+
 	  handleCheck: function handleCheck(e) {
 	    e.preventDefault();
 	    var tmp = this.state;
@@ -24926,7 +24945,6 @@
 	    } else {
 	      tmp.meeting.instances.push(instance);
 	    }
-	    console.log(tmp.meeting.instances);
 	    this.setState(tmp);
 	  },
 
@@ -24989,6 +25007,10 @@
 	          handle: this.handleAttendee, handleAdd: this.handleAdd,
 	          handleCat: this.handleAttendeeCat, handleDel: this.handleDel,
 	          handleCheck: this.handleCheck, handleDate: this.handleDate
+	        }),
+	        _react2.default.createElement(_components.AttendanceCount, {
+	          count: this.getInstance().count || "",
+	          handle: this.handleCount
 	        }),
 	        _react2.default.createElement(
 	          _reactBootstrap.Button,
@@ -56557,7 +56579,7 @@
 	    }.bind(this));
 	    return _react2.default.createElement(
 	      'div',
-	      null,
+	      { className: 'form-group' },
 	      _react2.default.createElement(
 	        'h4',
 	        null,
@@ -56674,7 +56696,7 @@
 	    var optionItems = OPTIONS.map(function (o) {
 	      return _react2.default.createElement(
 	        'option',
-	        { selected: o === this.props.category },
+	        { key: o, selected: o === this.props.category },
 	        o
 	      );
 	    }.bind(this));
@@ -56693,6 +56715,15 @@
 	  render: function render() {
 	    return _react2.default.createElement(_reactBootstrap.Input, { type: 'text', name: 'name', placeholder: 'Display Name',
 	      value: this.props.name, onChange: this.props.handle });
+	  }
+	});
+
+	var AttendanceCount = _react2.default.createClass({
+	  displayName: 'AttendanceCount',
+
+	  render: function render() {
+	    return _react2.default.createElement(_reactBootstrap.Input, { className: 'form-group', placeholder: 'Attendance count (optional)',
+	      value: this.props.count, type: 'number', onChange: this.props.handle });
 	  }
 	});
 
@@ -56805,6 +56836,7 @@
 	module.exports.MeetingLocality = MeetingLocality;
 	module.exports.MeetingDate = MeetingDate;
 	module.exports.AttendeeList = AttendeeList;
+	module.exports.AttendanceCount = AttendanceCount;
 
 /***/ },
 /* 565 */

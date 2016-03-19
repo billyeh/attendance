@@ -47,7 +47,7 @@ var AttendeeList = React.createClass({
       return (<Attendee attendee={attendee} key={i} {...this.props} />);
     }.bind(this));
     return (
-      <div>
+      <div className="form-group">
         <h4>Attendees
           <Button onClick={this.props.handleAdd}
             style={{marginLeft: "10px"}}>
@@ -146,7 +146,7 @@ var MeetingCategory = React.createClass({
   render: function() {
     var optionItems = OPTIONS.map(function(o) {
       return (
-        <option selected={o === this.props.category}>
+        <option key={o} selected={o === this.props.category}>
           {o}
         </option>
       );
@@ -165,6 +165,15 @@ var MeetingName = React.createClass({
     return (
       <Input type="text" name="name" placeholder="Display Name"
         value={this.props.name} onChange={this.props.handle}/>
+    );
+  }
+});
+
+var AttendanceCount = React.createClass({
+  render: function() {
+    return (
+      <Input className="form-group" placeholder="Attendance count (optional)"
+        value={this.props.count} type="number" onChange={this.props.handle} />
     );
   }
 });
@@ -269,3 +278,4 @@ module.exports.MeetingCategory = MeetingCategory;
 module.exports.MeetingLocality = MeetingLocality;
 module.exports.MeetingDate = MeetingDate;
 module.exports.AttendeeList = AttendeeList;
+module.exports.AttendanceCount = AttendanceCount;

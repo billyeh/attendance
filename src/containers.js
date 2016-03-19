@@ -14,7 +14,8 @@ import {
   MeetingCategory,
   MeetingLocality,
   MeetingDate,
-  AttendeeList
+  AttendeeList,
+  AttendanceCount
 } from './components.js';
 
 var MeetingBox = React.createClass({
@@ -127,6 +128,25 @@ var MeetingForm = React.createClass({
     this.setState(tmp);
   },
 
+  handleCount: function(e) {
+    var tmp = this.state;
+    var date = this.getDate();
+    var instanceIndex = tmp.meeting.instances.findIndex(function(i) {
+      return date.isSame(i.date, 'day');
+    });
+    var instance = {date: date, attendance: []};
+    if (instanceIndex >= 0) {
+      instance = tmp.meeting.instances[instanceIndex];
+    }
+    instance.count = e.target.value;
+    if (instanceIndex >= 0) {
+      tmp.meeting.instances[instanceIndex] = instance;
+    } else {
+      tmp.meeting.instances.push(instance);
+    }
+    this.setState(tmp);
+  },
+
   handleCheck: function(e) {
     e.preventDefault();
     var tmp = this.state;
@@ -151,7 +171,6 @@ var MeetingForm = React.createClass({
     } else {
       tmp.meeting.instances.push(instance);
     }
-    console.log(tmp.meeting.instances);
     this.setState(tmp);
   },
 
@@ -209,7 +228,11 @@ var MeetingForm = React.createClass({
             handle={this.handleAttendee} handleAdd={this.handleAdd}
             handleCat={this.handleAttendeeCat} handleDel={this.handleDel}
             handleCheck={this.handleCheck} handleDate={this.handleDate}
-            />
+          />
+          <AttendanceCount 
+            count={this.getInstance().count || ""}
+            handle={this.handleCount}
+          />
           <Button 
             className="btn-primary btn-raised" block
             type="submit" style={{marginTop: "15px"}}
