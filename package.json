@@ -13,9 +13,13 @@
     "url": "https://github.com/billyeh/attendance.git"
   },
   "dependencies": {
-    "mongoose": "^4.4.6",
     "body-parser": "^1.15.0",
-    "express": "^4.13.4"
+    "connect-flash": "^0.1.1",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "mongoose": "^4.4.6",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "babel-loader": "^6.2.4",

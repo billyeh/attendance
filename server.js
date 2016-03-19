@@ -3,11 +3,26 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var mongoose = require('mongoose');
 
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+
+var passport = require('passport');
+var flash = require('connect-flash');
 var Meeting = require('./models').Meeting;
 
+require('./src/config/passport')(passport);
+
 var app = express();
+
 app.use(express.static('static'));
+app.use(cookieParser());
 app.use(bodyParser.json());
+app.use(bodyParser());
+app.use(session({secret: 'secret'}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+
 app.delete('/api/meetings/:id', function(req, res) {
   Meeting.remove({_id: req.params.id}, function(err, docs) {
     res.status(200).send('deleted');
@@ -45,6 +60,27 @@ app.post('/api/meetings', function(req, res) {
 app.get('*', function(req, res) {
   res.sendFile(path.join(__dirname, 'static', 'index.html'));
 });
+
+// app.post('/login')
+
+app.post('/signup', passport.authenticate('local-signup', {
+  successRedirect: '/login',
+  failureRedirect: '/signup',
+  failureFlash: true
+}));
+
+app.post('/login', passport.authenticate('local-login', {
+  successRedirect: '/',
+  failureRedirect: '/login',
+  failureFlash: true
+}));
+
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated())
+    return next();
+  res.redirect('/login');
+}
+
 
 var server = app.listen(process.env.PORT || 3000, function () {
   var port = server.address().port;
