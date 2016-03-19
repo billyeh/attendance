@@ -66,7 +66,6 @@ var MeetingForm = React.createClass({
   handleCategory: function(e) {
     var tmp = this.state;
     tmp.meeting.category = $(e.target).val();
-    console.log(tmp);
     this.setState(tmp);
   },
 

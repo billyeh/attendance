@@ -83,14 +83,14 @@
 	        _react2.default.createElement(
 	          'h1',
 	          null,
-	          'Attendance',
-	          _react2.default.createElement(
-	            'a',
-	            { style: { fontSize: "2rem", marginTop: "1.2rem" },
-	              className: 'pull-right', href: '/logout' },
-	            'Logout'
-	          )
+	          'Attendance'
 	        )
+	      ),
+	      _react2.default.createElement(
+	        'a',
+	        { style: { fontSize: "2rem", marginTop: "-4rem" },
+	          className: 'pull-right', href: '/logout' },
+	        'Logout'
 	      ),
 	      _react2.default.createElement('hr', null),
 	      this.props.children
@@ -24854,7 +24854,6 @@
 	  handleCategory: function handleCategory(e) {
 	    var tmp = this.state;
 	    tmp.meeting.category = $(e.target).val();
-	    console.log(tmp);
 	    this.setState(tmp);
 	  },
 

@@ -19,11 +19,11 @@ var App = React.createClass({
         <a href="/">
           <h1>
             Attendance
-            <a style={{fontSize: "2rem", marginTop: "1.2rem"}} 
-              className="pull-right" href="/logout">
-              Logout
-            </a>
           </h1>
+        </a>
+        <a style={{fontSize: "2rem", marginTop: "-4rem"}} 
+          className="pull-right" href="/logout">
+          Logout
         </a>
         <hr />
       {this.props.children}
