@@ -32,7 +32,7 @@ app.use(express.static('static'));
 
 function auth(req, res, next) {
   console.log(req.url);
-  var staticFiles = ['/login', '/bootstrap.css', '/bundle.js'];
+  var staticFiles = ['/signup', '/login', '/bootstrap.css', '/bundle.js'];
   if (req.user || staticFiles.indexOf(req.url) >= 0) {
     next();
   } else {

@@ -72,8 +72,8 @@
 	      'div',
 	      null,
 	      _react2.default.createElement(
-	        _reactRouter.Link,
-	        { to: '/' },
+	        'a',
+	        { href: '/' },
 	        _react2.default.createElement(
 	          'h1',
 	          null,
@@ -56566,7 +56566,7 @@
 	            null,
 	            'Username:'
 	          ),
-	          _react2.default.createElement('input', { type: 'text', name: 'username' })
+	          _react2.default.createElement(_reactBootstrap.Input, { type: 'text', name: 'username' })
 	        ),
 	        _react2.default.createElement(
 	          'div',
@@ -56576,12 +56576,12 @@
 	            null,
 	            'Password:'
 	          ),
-	          _react2.default.createElement('input', { type: 'password', name: 'password' })
+	          _react2.default.createElement(_reactBootstrap.Input, { type: 'password', name: 'password' })
 	        ),
 	        _react2.default.createElement(
 	          'div',
 	          null,
-	          _react2.default.createElement('input', { type: 'submit', value: 'Sign Up' })
+	          _react2.default.createElement(_reactBootstrap.Input, { type: 'submit', value: 'Sign Up' })
 	        )
 	      )
 	    );
@@ -56590,6 +56590,14 @@
 
 	var login = _react2.default.createClass({
 	  displayName: 'login',
+
+	  signup: function signup(e) {
+	    this.context.router.push('/signup');
+	  },
+
+	  contextTypes: {
+	    router: _react2.default.PropTypes.object
+	  },
 
 	  render: function render() {
 	    return _react2.default.createElement(
@@ -56611,7 +56619,7 @@
 	            null,
 	            'Username:'
 	          ),
-	          _react2.default.createElement('input', { type: 'text', name: 'username' })
+	          _react2.default.createElement(_reactBootstrap.Input, { type: 'text', name: 'username' })
 	        ),
 	        _react2.default.createElement(
 	          'div',
@@ -56621,12 +56629,17 @@
 	            null,
 	            'Password:'
 	          ),
-	          _react2.default.createElement('input', { type: 'password', name: 'password' })
+	          _react2.default.createElement(_reactBootstrap.Input, { type: 'password', name: 'password' })
 	        ),
 	        _react2.default.createElement(
 	          'div',
 	          null,
-	          _react2.default.createElement('input', { type: 'submit', value: 'Log In' })
+	          _react2.default.createElement(_reactBootstrap.Input, { type: 'submit', value: 'Log In' }),
+	          _react2.default.createElement(
+	            _reactBootstrap.Button,
+	            { block: true, onClick: this.signup },
+	            'Sign Up'
+	          )
 	        )
 	      )
 	    );

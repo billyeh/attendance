@@ -22,14 +22,14 @@ var signup = React.createClass({
         <form action="/signup" method="post">
           <div>
             <label>Username:</label>
-            <input type="text" name="username"/>
+            <Input type="text" name="username"/>
           </div>
           <div>
             <label>Password:</label>
-            <input type="password" name="password"/>
+            <Input type="password" name="password"/>
           </div>
           <div>
-            <input type="submit" value="Sign Up"/>
+            <Input type="submit" value="Sign Up"/>
           </div>
         </form>
       </div>
@@ -38,6 +38,14 @@ var signup = React.createClass({
 })
 
 var login = React.createClass({
+  signup: function(e) {
+    this.context.router.push('/signup');
+  },
+
+  contextTypes: {
+    router: React.PropTypes.object
+  },
+
   render: function() {
     return (
       <div>
@@ -45,14 +53,17 @@ var login = React.createClass({
         <form action="/login" method="post">
           <div>
             <label>Username:</label>
-            <input type="text" name="username"/>
+            <Input type="text" name="username"/>
           </div>
           <div>
             <label>Password:</label>
-            <input type="password" name="password"/>
+            <Input type="password" name="password"/>
           </div>
           <div>
-            <input type="submit" value="Log In"/>
+            <Input type="submit" value="Log In"/>
+            <Button block onClick={this.signup}>
+              Sign Up
+            </Button>
           </div>
         </form>
       </div>

@@ -11,9 +11,9 @@ var App = React.createClass({
   render: function() {
     return (
       <div>
-        <Link to="/">
+        <a href="/">
           <h1>Attendance</h1>
-        </Link>
+        </a>
         <hr />
       {this.props.children}
       </div>
