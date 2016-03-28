@@ -1,6 +1,4 @@
 var mongoose = require('mongoose');
-var dbString = require('./config').mongodbString;
-
 var bcrypt = require('bcrypt-nodejs');
 
 var connection_string = 'mongodb://localhost/attendance';
