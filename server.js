@@ -28,7 +28,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use(auth);
-app.use(express.static('static'));
+app.use(express.static(path.join(__dirname, 'static')));
 
 function auth(req, res, next) {
   var staticFiles = ['/signup', '/login', '/bootstrap.css', '/bundle.js'];
