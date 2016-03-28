@@ -3,8 +3,12 @@ var dbString = require('./config').mongodbString;
 
 var bcrypt = require('bcrypt-nodejs');
 
-mongoose.connect(process.env.NODE_ENV === 'production' ? dbString :
- 'mongodb://localhost/attendance');
+var connection_string = 'mongodb://localhost/attendance';
+if (process.env.NODE_ENV === 'production') {
+  connection_string = 'mongodb://' + process.env.MONGO_USER + ':' + 
+    process.env.MONGO_PASS + '@' + process.env.MONGO_IP + '/attendance';
+}
+mongoose.connect(connection_string);
 
 var Meeting = mongoose.model('Meeting', {
   user: mongoose.Schema.Types.ObjectId,
