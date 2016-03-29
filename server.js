@@ -2,15 +2,13 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
 var mongoose = require('mongoose');
-
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
-
 var passport = require('passport');
 var flash = require('connect-flash');
-var Meeting = require('./models').Meeting;
 
-require('./src/config/passport')(passport);
+var Meeting = require('./src/server/models').Meeting;
+require('./src/server/passport')(passport);
 
 var app = express();
 
