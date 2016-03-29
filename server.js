@@ -44,13 +44,15 @@ app.delete('/api/meetings/:id', function(req, res) {
 });
 
 app.get('/api/meetings/:id', function(req, res) {
-  var meeting = Meeting.find({_id: req.params.id}, function(err, docs) {
-    try {
-      res.json(docs[0]);
-    } catch (e) {
-      res.send(e);
+  var meeting = Meeting.find({_id: req.params.id, user: req.user._id}, 
+    function(err, docs) {
+      try {
+        res.json(docs[0]);
+      } catch (e) {
+        res.send(e);
+      }
     }
-  });
+  );
 });
 
 app.get('/api/meetings', function(req, res) {
