@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import {Router, Route, Link, IndexRoute, browserHistory} from 'react-router';
 import {Button} from 'react-bootstrap';
 
-require('./site.css');
+require('./css/site.css');
 
 import {MeetingForm, MeetingBox} from './containers.js';
 import {MeetingTypes, signup, login} from './components.js';
