@@ -76,7 +76,7 @@
 	  render: function render() {
 	    return _react2.default.createElement(
 	      'div',
-	      null,
+	      { className: 'container' },
 	      _react2.default.createElement(
 	        'a',
 	        { href: '/' },
@@ -41946,21 +41946,25 @@
 	  render: function render() {
 	    return _react2.default.createElement(
 	      'div',
-	      null,
+	      { className: 'row' },
 	      _react2.default.createElement(
-	        'h4',
-	        null,
-	        'Meeting Information'
-	      ),
-	      _react2.default.createElement(
-	        'form',
-	        { className: 'form-group', name: 'meetingAdd' },
+	        'div',
+	        { className: 'col-md-6' },
+	        _react2.default.createElement(
+	          'h4',
+	          null,
+	          'Meeting Information'
+	        ),
 	        _react2.default.createElement(_components.MeetingName, { name: this.state.meeting.name,
 	          handle: this.handleName }),
 	        _react2.default.createElement(_components.MeetingCategory, { category: this.state.meeting.category,
 	          handle: this.handleCategory }),
 	        _react2.default.createElement(_components.MeetingLocality, { locality: this.state.meeting.locality,
-	          handle: this.handleLocality }),
+	          handle: this.handleLocality })
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'col-md-6' },
 	        _react2.default.createElement(_components.AttendeeList, {
 	          date: this.getDate(),
 	          attendees: this.state.meeting.attendees,
@@ -56812,7 +56816,7 @@
 	    var optionItems = OPTIONS.map(function (o) {
 	      return _react2.default.createElement(
 	        'option',
-	        { key: o, selected: o === this.props.category },
+	        { key: o, value: o === this.props.category },
 	        o
 	      );
 	    }.bind(this));

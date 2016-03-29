@@ -211,15 +211,17 @@ var MeetingForm = React.createClass({
 
   render: function() {
     return (
-      <div>
-        <h4>Meeting Information</h4>
-        <form className="form-group" name="meetingAdd">
+      <div className="row">
+        <div className="col-md-6">
+          <h4>Meeting Information</h4>
           <MeetingName name={this.state.meeting.name}
             handle={this.handleName}/>
           <MeetingCategory category={this.state.meeting.category}
             handle={this.handleCategory} />
           <MeetingLocality locality={this.state.meeting.locality}
             handle={this.handleLocality}/>
+        </div>
+        <div className="col-md-6">
           <AttendeeList 
             date={this.getDate()}
             attendees={this.state.meeting.attendees} 
@@ -238,7 +240,7 @@ var MeetingForm = React.createClass({
             onClick={this.handleSubmit}>
             Save Meeting
           </Button>
-        </form>
+        </div>
       </div>
     );
   }

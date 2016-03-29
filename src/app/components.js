@@ -203,7 +203,7 @@ var MeetingCategory = React.createClass({
   render: function() {
     var optionItems = OPTIONS.map(function(o) {
       return (
-        <option key={o} selected={o === this.props.category}>
+        <option key={o} value={o === this.props.category}>
           {o}
         </option>
       );

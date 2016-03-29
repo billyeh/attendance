@@ -15,7 +15,7 @@ var App = React.createClass({
 
   render: function() {
     return (
-      <div>
+      <div className="container">
         <a href="/">
           <h1>
             Attendance

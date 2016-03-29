@@ -1595,12 +1595,12 @@ pre code {
 }
 @media (min-width: 992px) {
   .container {
-    width: 970px;
+    width: 750px;
   }
 }
 @media (min-width: 1200px) {
   .container {
-    width: 1170px;
+    width: 750px;
   }
 }
 .container-fluid {
@@ -3971,7 +3971,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .input-group-btn:last-child > .btn,
 .input-group-btn:last-child > .btn-group {
-  //z-index: 2;
+  /*z-index: 2;*/
   margin-left: -1px;
 }
 .nav {
