@@ -56812,13 +56812,13 @@
 	    var optionItems = OPTIONS.map(function (o) {
 	      return _react2.default.createElement(
 	        'option',
-	        { key: o, selected: o === this.props.category },
+	        { key: o },
 	        o
 	      );
 	    }.bind(this));
 	    return _react2.default.createElement(
 	      'select',
-	      { className: 'form-group form-control',
+	      { className: 'form-group form-control', value: this.props.category,
 	        onChange: this.props.handle },
 	      optionItems
 	    );
