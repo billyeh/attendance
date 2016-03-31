@@ -203,13 +203,13 @@ var MeetingCategory = React.createClass({
   render: function() {
     var optionItems = OPTIONS.map(function(o) {
       return (
-        <option key={o} selected={o === this.props.category}>
+        <option key={o}>
           {o}
         </option>
       );
     }.bind(this));
     return (
-      <select className="form-group form-control"
+      <select className="form-group form-control" value={this.props.category}
         onChange={this.props.handle}>
         {optionItems}
       </select>
