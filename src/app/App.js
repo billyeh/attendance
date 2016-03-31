@@ -5,7 +5,7 @@ import {Button} from 'react-bootstrap';
 
 require('./css/site.css');
 
-import {MeetingForm, MeetingBox} from './containers.js';
+import {MeetingForm, MeetingBox, MeetingImport} from './containers.js';
 import {MeetingTypes, signup, login} from './components.js';
 
 var App = React.createClass({
@@ -37,6 +37,7 @@ ReactDOM.render(
    <Route path="/" component={App}>
      <IndexRoute component={MeetingTypes} />
      <Route path="meetings/:id" component={MeetingForm} />
+     <Route path="meetings/:id/import" component={MeetingImport} />
      <Route path="meeting/:type" component={MeetingBox} />
      <Route path="/login" component={login} />
      <Route path="/signup" component={signup} />

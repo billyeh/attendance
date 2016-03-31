@@ -18,6 +18,75 @@ import {
   AttendanceCount
 } from './components.js';
 
+var MeetingImport = React.createClass({
+  mixins: [UpsertMeetingMixin],
+
+  getInitialState: function() {
+    return {
+      meeting: {
+        _id: this.props.params.id,
+        name: "Untitled Meeting",
+        category: "Other",
+        locality: "",
+        attendees: [],
+        instances: []
+      },
+      contents: ""
+    };
+  },
+
+  componentDidMount: function() {
+    $.get('/api/meetings/' + this.props.params.id, function(data) {
+      this.setState({
+        meeting: data, 
+        contents: "John Doe,New One\nJane,Student\nJoe"
+      });
+    }.bind(this));
+  },
+
+  changeContents: function(e) {
+    this.setState({
+      meeting: this.state.meeting,
+      contents: e.target.value
+    });
+  },
+
+  importAttendees: function(e) {
+    var tmp = this.state.meeting;
+    this.state.contents.split("\n").forEach(function(line) {
+      var row = line.split(",");
+      tmp.attendees.push({
+        fullname: row[0],
+        id: ObjectID().str,
+        category: row[1] || "None"
+      });
+    });
+    console.log(tmp);
+    this.addMeeting(tmp, function(data) {
+      this.context.router.push('/');
+    }.bind(this));
+  },
+
+  contextTypes: {
+    router: React.PropTypes.object
+  },
+
+  render: function() {
+    return (
+      <div>
+        <Input type="textarea" 
+          value={this.state.contents}
+          onChange={this.changeContents}
+          label="Paste names of attendees with optional categories separated by
+          a comma (CSV format), as in the example. One name per line." />
+        <Button bsStyle="primary" block onClick={this.importAttendees}>
+          Add Attendees
+        </Button>
+      </div>
+    );
+  }
+});
+
 var MeetingBox = React.createClass({
   getInitialState: function() {
     return {meetings: []};
@@ -229,6 +298,7 @@ var MeetingForm = React.createClass({
             handle={this.handleAttendee} handleAdd={this.handleAdd}
             handleCat={this.handleAttendeeCat} handleDel={this.handleDel}
             handleCheck={this.handleCheck} handleDate={this.handleDate}
+            {...this.props}
           />
           <AttendanceCount 
             count={this.getInstance().count || ""}
@@ -248,3 +318,4 @@ var MeetingForm = React.createClass({
 
 module.exports.MeetingForm = MeetingForm;
 module.exports.MeetingBox = MeetingBox;
+module.exports.MeetingImport = MeetingImport;

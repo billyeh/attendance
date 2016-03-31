@@ -99,6 +99,14 @@ var DeleteMeeting = React.createClass({
 });
 
 var AttendeeList = React.createClass({
+  handleImport: function(e) {
+    this.context.router.push('/meetings/' + this.props.params.id + '/import');
+  },
+
+  contextTypes: {
+    router: React.PropTypes.object
+  },
+
   render: function() {
     var attendees = this.props.attendees.map(function(attendee, i) {
       return (<Attendee attendee={attendee} key={i} {...this.props} />);
@@ -109,6 +117,10 @@ var AttendeeList = React.createClass({
           <Button onClick={this.props.handleAdd}
             style={{marginLeft: "10px"}}>
             Add
+          </Button>
+          <Button onClick={this.handleImport}
+            style={{marginLeft: "10px"}}>
+            Import
           </Button>
         </h4>
         <MeetingDate date={this.props.date} handle={this.props.handleDate} />

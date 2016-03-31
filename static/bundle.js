@@ -106,6 +106,7 @@
 	    { path: '/', component: App },
 	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _components.MeetingTypes }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'meetings/:id', component: _containers.MeetingForm }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'meetings/:id/import', component: _containers.MeetingImport }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'meeting/:type', component: _containers.MeetingBox }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/login', component: _components.login }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/signup', component: _components.signup })
@@ -41730,6 +41731,8 @@
 
 	'use strict';
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -41749,6 +41752,78 @@
 	var _components = __webpack_require__(564);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var MeetingImport = _react2.default.createClass({
+	  displayName: 'MeetingImport',
+
+	  mixins: [_util.UpsertMeetingMixin],
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      meeting: {
+	        _id: this.props.params.id,
+	        name: "Untitled Meeting",
+	        category: "Other",
+	        locality: "",
+	        attendees: [],
+	        instances: []
+	      },
+	      contents: ""
+	    };
+	  },
+
+	  componentDidMount: function componentDidMount() {
+	    $.get('/api/meetings/' + this.props.params.id, function (data) {
+	      this.setState({
+	        meeting: data,
+	        contents: "John Doe,New One\nJane,Student\nJoe"
+	      });
+	    }.bind(this));
+	  },
+
+	  changeContents: function changeContents(e) {
+	    this.setState({
+	      meeting: this.state.meeting,
+	      contents: e.target.value
+	    });
+	  },
+
+	  importAttendees: function importAttendees(e) {
+	    var tmp = this.state.meeting;
+	    this.state.contents.split("\n").forEach(function (line) {
+	      var row = line.split(",");
+	      tmp.attendees.push({
+	        fullname: row[0],
+	        id: (0, _bsonObjectid2.default)().str,
+	        category: row[1] || "None"
+	      });
+	    });
+	    console.log(tmp);
+	    this.addMeeting(tmp, function (data) {
+	      this.context.router.push('/');
+	    }.bind(this));
+	  },
+
+	  contextTypes: {
+	    router: _react2.default.PropTypes.object
+	  },
+
+	  render: function render() {
+	    return _react2.default.createElement(
+	      'div',
+	      null,
+	      _react2.default.createElement(_reactBootstrap.Input, { type: 'textarea',
+	        value: this.state.contents,
+	        onChange: this.changeContents,
+	        label: 'Paste names of attendees with optional categories separated by a comma (CSV format), as in the example. One name per line.' }),
+	      _react2.default.createElement(
+	        _reactBootstrap.Button,
+	        { bsStyle: 'primary', block: true, onClick: this.importAttendees },
+	        'Add Attendees'
+	      )
+	    );
+	  }
+	});
 
 	var MeetingBox = _react2.default.createClass({
 	  displayName: 'MeetingBox',
@@ -41965,14 +42040,14 @@
 	      _react2.default.createElement(
 	        'div',
 	        { className: 'col-md-6' },
-	        _react2.default.createElement(_components.AttendeeList, {
+	        _react2.default.createElement(_components.AttendeeList, _extends({
 	          date: this.getDate(),
 	          attendees: this.state.meeting.attendees,
 	          instance: this.getInstance(),
 	          handle: this.handleAttendee, handleAdd: this.handleAdd,
 	          handleCat: this.handleAttendeeCat, handleDel: this.handleDel,
 	          handleCheck: this.handleCheck, handleDate: this.handleDate
-	        }),
+	        }, this.props)),
 	        _react2.default.createElement(_components.AttendanceCount, {
 	          count: this.getInstance().count || "",
 	          handle: this.handleCount
@@ -41992,6 +42067,7 @@
 
 	module.exports.MeetingForm = MeetingForm;
 	module.exports.MeetingBox = MeetingBox;
+	module.exports.MeetingImport = MeetingImport;
 
 /***/ },
 /* 459 */
@@ -56693,6 +56769,14 @@
 	var AttendeeList = _react2.default.createClass({
 	  displayName: 'AttendeeList',
 
+	  handleImport: function handleImport(e) {
+	    this.context.router.push('/meetings/' + this.props.params.id + '/import');
+	  },
+
+	  contextTypes: {
+	    router: _react2.default.PropTypes.object
+	  },
+
 	  render: function render() {
 	    var attendees = this.props.attendees.map(function (attendee, i) {
 	      return _react2.default.createElement(Attendee, _extends({ attendee: attendee, key: i }, this.props));
@@ -56709,6 +56793,12 @@
 	          { onClick: this.props.handleAdd,
 	            style: { marginLeft: "10px" } },
 	          'Add'
+	        ),
+	        _react2.default.createElement(
+	          _reactBootstrap.Button,
+	          { onClick: this.handleImport,
+	            style: { marginLeft: "10px" } },
+	          'Import'
 	        )
 	      ),
 	      _react2.default.createElement(MeetingDate, { date: this.props.date, handle: this.props.handleDate }),
