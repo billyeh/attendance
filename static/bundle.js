@@ -42034,7 +42034,7 @@
 	        { className: 'col-md-6' },
 	        _react2.default.createElement(
 	          'h4',
-	          null,
+	          { style: { "margin-bottom": "25px" } },
 	          'Meeting Information'
 	        ),
 	        _react2.default.createElement(_components.MeetingName, { name: this.state.meeting.name,

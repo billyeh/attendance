@@ -285,7 +285,7 @@ var MeetingForm = React.createClass({
     return (
       <div className="row">
         <div className="col-md-6">
-          <h4>Meeting Information</h4>
+          <h4 style={{"margin-bottom": "25px"}}>Meeting Information</h4>
           <MeetingName name={this.state.meeting.name}
             handle={this.handleName}/>
           <MeetingCategory category={this.state.meeting.category}
