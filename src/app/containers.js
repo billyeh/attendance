@@ -284,6 +284,7 @@ var MeetingForm = React.createClass({
   render: function() {
     return (
       <div className="row">
+        <form>
         <div className="col-md-6">
           <h4 style={{"margin-bottom": "25px"}}>Meeting Information</h4>
           <MeetingName name={this.state.meeting.name}
@@ -314,6 +315,7 @@ var MeetingForm = React.createClass({
             Save Meeting
           </Button>
         </div>
+        </form>
       </div>
     );
   }

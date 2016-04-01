@@ -15,7 +15,6 @@ and build the application. Also ensure that MongoDB is installed and running.
 * filter attendees by typing
 * exporting attendees
 * import attendance
-* hide meeting information part of form
 * reuse data from home page to meeting view
 * real-time updates
 * clone meeting

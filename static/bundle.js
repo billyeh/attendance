@@ -42030,42 +42030,46 @@
 	      'div',
 	      { className: 'row' },
 	      _react2.default.createElement(
-	        'div',
-	        { className: 'col-md-6' },
+	        'form',
+	        null,
 	        _react2.default.createElement(
-	          'h4',
-	          { style: { "margin-bottom": "25px" } },
-	          'Meeting Information'
+	          'div',
+	          { className: 'col-md-6' },
+	          _react2.default.createElement(
+	            'h4',
+	            { style: { "margin-bottom": "25px" } },
+	            'Meeting Information'
+	          ),
+	          _react2.default.createElement(_components.MeetingName, { name: this.state.meeting.name,
+	            handle: this.handleName }),
+	          _react2.default.createElement(_components.MeetingCategory, { category: this.state.meeting.category,
+	            handle: this.handleCategory }),
+	          _react2.default.createElement(_components.MeetingLocality, { locality: this.state.meeting.locality,
+	            handle: this.handleLocality })
 	        ),
-	        _react2.default.createElement(_components.MeetingName, { name: this.state.meeting.name,
-	          handle: this.handleName }),
-	        _react2.default.createElement(_components.MeetingCategory, { category: this.state.meeting.category,
-	          handle: this.handleCategory }),
-	        _react2.default.createElement(_components.MeetingLocality, { locality: this.state.meeting.locality,
-	          handle: this.handleLocality })
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'col-md-6' },
-	        _react2.default.createElement(_components.AttendeeList, _extends({
-	          date: this.getDate(),
-	          attendees: this.state.meeting.attendees,
-	          instance: this.getInstance(),
-	          handle: this.handleAttendee, handleAdd: this.handleAdd,
-	          handleCat: this.handleAttendeeCat, handleDel: this.handleDel,
-	          handleCheck: this.handleCheck, handleDate: this.handleDate
-	        }, this.props)),
-	        _react2.default.createElement(_components.AttendanceCount, {
-	          count: this.getInstance().count || "",
-	          handle: this.handleCount
-	        }),
 	        _react2.default.createElement(
-	          _reactBootstrap.Button,
-	          {
-	            className: 'btn-primary btn-raised', block: true,
-	            type: 'submit', style: { marginTop: "15px" },
-	            onClick: this.handleSubmit },
-	          'Save Meeting'
+	          'div',
+	          { className: 'col-md-6' },
+	          _react2.default.createElement(_components.AttendeeList, _extends({
+	            date: this.getDate(),
+	            attendees: this.state.meeting.attendees,
+	            instance: this.getInstance(),
+	            handle: this.handleAttendee, handleAdd: this.handleAdd,
+	            handleCat: this.handleAttendeeCat, handleDel: this.handleDel,
+	            handleCheck: this.handleCheck, handleDate: this.handleDate
+	          }, this.props)),
+	          _react2.default.createElement(_components.AttendanceCount, {
+	            count: this.getInstance().count || "",
+	            handle: this.handleCount
+	          }),
+	          _react2.default.createElement(
+	            _reactBootstrap.Button,
+	            {
+	              className: 'btn-primary btn-raised', block: true,
+	              type: 'submit', style: { marginTop: "15px" },
+	              onClick: this.handleSubmit },
+	            'Save Meeting'
+	          )
 	        )
 	      )
 	    );
