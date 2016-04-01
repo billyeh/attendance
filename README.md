@@ -11,8 +11,10 @@ and build the application. Also ensure that MongoDB is installed and running.
 * ~~authentication to the app, with permissions based on locality?~~
 * ~~authentication to database (backend stuff)~~
 * ~~enter count of attendance instead of per-person~~
-* importing attendees
+* ~~importing attendees~~
 * filter attendees by typing
+* exporting attendees
+* import attendance
 * hide meeting information part of form
 * reuse data from home page to meeting view
 * real-time updates

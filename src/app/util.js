@@ -23,5 +23,12 @@ var DeleteMeetingMixin = {
   }
 };
 
+var MEETING_CATEGORIES = ['Other', 'Prayer Meeting', 'Lord\'s Table Meeting', 
+  'Small Group Meeting'];
+var ATTENDEE_CATEGORIES = ['None', 'College', 'New One', 'Full-time', 'Visitor', 
+  'Community', 'YP'];
+
 module.exports.UpsertMeetingMixin = UpsertMeetingMixin;
 module.exports.DeleteMeetingMixin = DeleteMeetingMixin;
+module.exports.MEETING_CATEGORIES = MEETING_CATEGORIES;
+module.exports.ATTENDEE_CATEGORIES = ATTENDEE_CATEGORIES;

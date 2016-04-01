@@ -56599,8 +56599,13 @@
 	  }
 	};
 
+	var MEETING_CATEGORIES = ['Other', 'Prayer Meeting', 'Lord\'s Table Meeting', 'Small Group Meeting'];
+	var ATTENDEE_CATEGORIES = ['None', 'College', 'New One', 'Full-time', 'Visitor', 'Community', 'YP'];
+
 	module.exports.UpsertMeetingMixin = UpsertMeetingMixin;
 	module.exports.DeleteMeetingMixin = DeleteMeetingMixin;
+	module.exports.MEETING_CATEGORIES = MEETING_CATEGORIES;
+	module.exports.ATTENDEE_CATEGORIES = ATTENDEE_CATEGORIES;
 
 /***/ },
 /* 564 */
@@ -56631,8 +56636,6 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	__webpack_require__(567);
-
-	var OPTIONS = ['Other', 'Prayer Meeting', 'Lord\'s Table Meeting', 'Small Group Meeting'];
 
 	var signup = _react2.default.createClass({
 	  displayName: 'signup',
@@ -56850,8 +56853,7 @@
 	      return a === this.props.attendee.id;
 	    }.bind(this));
 	    var checkStyle = checked ? "success" : "default";
-	    var items = ['None', 'College', 'New One', 'Full-time', 'Visitor', 'Community', 'YP'];
-	    var menuItems = items.map(function (i, index) {
+	    var menuItems = _util.ATTENDEE_CATEGORIES.map(function (i, index) {
 	      return _react2.default.createElement(
 	        _reactBootstrap.MenuItem,
 	        { onClick: this.props.handleCat, key: index,
@@ -56903,7 +56905,7 @@
 	  displayName: 'MeetingCategory',
 
 	  render: function render() {
-	    var optionItems = OPTIONS.map(function (o) {
+	    var optionItems = _util.MEETING_CATEGORIES.map(function (o) {
 	      return _react2.default.createElement(
 	        'option',
 	        { key: o },
@@ -56983,7 +56985,7 @@
 	  },
 
 	  render: function render() {
-	    var buttons = OPTIONS.map(function (o, i) {
+	    var buttons = _util.MEETING_CATEGORIES.map(function (o, i) {
 	      return _react2.default.createElement(
 	        _reactBootstrap.Button,
 	        { key: i, onClick: this.handleClick, block: true, bsSize: 'large' },

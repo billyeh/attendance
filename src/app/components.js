@@ -8,11 +8,10 @@ require('react-datepicker/dist/react-datepicker.css');
 
 import {
   UpsertMeetingMixin,
-  DeleteMeetingMixin
+  DeleteMeetingMixin,
+  MEETING_CATEGORIES,
+  ATTENDEE_CATEGORIES
 } from './util.js';
-
-var OPTIONS = ['Other', 'Prayer Meeting', 'Lord\'s Table Meeting', 
-  'Small Group Meeting'];
 
 var signup = React.createClass({
   render: function() {
@@ -165,9 +164,7 @@ var TypeBox = React.createClass({
       return a === this.props.attendee.id;
     }.bind(this));
     var checkStyle = checked ? "success" : "default";
-    var items = ['None', 'College', 'New One', 'Full-time', 'Visitor', 
-      'Community', 'YP'];
-    var menuItems = items.map(function(i, index) {
+    var menuItems = ATTENDEE_CATEGORIES.map(function(i, index) {
       return (
         <MenuItem onClick={this.props.handleCat} key={index}
           id={this.props.attendee.id}>
@@ -213,7 +210,7 @@ var MeetingLocality = React.createClass({
 
 var MeetingCategory = React.createClass({
   render: function() {
-    var optionItems = OPTIONS.map(function(o) {
+    var optionItems = MEETING_CATEGORIES.map(function(o) {
       return (
         <option key={o}>
           {o}
@@ -292,7 +289,7 @@ var MeetingTypes = React.createClass({
   },
 
   render: function() {
-    var buttons = OPTIONS.map(function(o, i) {
+    var buttons = MEETING_CATEGORIES.map(function(o, i) {
       return (
         <Button key={i} onClick={this.handleClick} block bsSize="large">
           {o}
