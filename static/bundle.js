@@ -41842,6 +41842,13 @@
 	    var filteredMeetings = this.state.meetings.filter(function (m) {
 	      return m.category === this.props.params.type;
 	    }.bind(this));
+	    if (filteredMeetings.length === 0) {
+	      return _react2.default.createElement(
+	        'span',
+	        null,
+	        'There are no meetings to display'
+	      );
+	    }
 	    return _react2.default.createElement(
 	      'div',
 	      null,
