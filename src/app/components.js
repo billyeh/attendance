@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment-timezone';
 import DatePicker from 'react-datepicker';
-import {Button, Input, DropdownButton, MenuItem} from 'react-bootstrap';
+import {Button, Input, DropdownButton, MenuItem, Alert, Glyphicon} from 'react-bootstrap';
 import {Link} from 'react-router';
 
 require('react-datepicker/dist/react-datepicker.css');
@@ -15,9 +15,18 @@ import {
 
 var signup = React.createClass({
   render: function() {
-    return (
+    var alert;
+    if (this.props.location.query.error) {
+      alert = (
+        <Alert bsStyle="danger">
+          {this.props.location.query.error}
+        </Alert>
+      );
+    }
+     return (
       <div>
         <h1>Sign Up</h1>
+        {alert}
         <form action="/signup" method="post">
           <div>
             <label>Username:</label>
@@ -46,9 +55,25 @@ var login = React.createClass({
   },
 
   render: function() {
+    var alert;
+    if (this.props.location.query.error) {
+      alert = (
+        <Alert bsStyle="danger">
+          {this.props.location.query.error}
+        </Alert>
+      );
+    }
+    if (this.props.location.query.message) {
+      alert = (                                                                 
+        <Alert>                                                
+          {this.props.location.query.message}                                     
+        </Alert>                                                                
+      );
+    }
     return (
       <div>
         <h1>Log In</h1>
+        {alert}
         <form action="/login" method="post">
           <div>
             <label>Username:</label>

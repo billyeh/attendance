@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var passport = require('passport');
 var flash = require('connect-flash');
+var url = require('url');
 
 var Meeting = require('./src/server/models').Meeting;
 require('./src/server/passport')(passport);
@@ -30,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'static')));
 
 function auth(req, res, next) {
   var staticFiles = ['/signup', '/login', '/bootstrap.css', '/bundle.js'];
-  if (req.user || staticFiles.indexOf(req.url) >= 0) {
+  if (req.user || staticFiles.indexOf(url.parse(req.url).pathname) >= 0) {
     next();
   } else {
     res.redirect('/login');
@@ -79,14 +80,17 @@ app.post('/api/meetings', function(req, res) {
 });
 
 app.post('/signup', passport.authenticate('local-signup', {
-  successRedirect: '/login',
-  failureRedirect: '/signup',
+  successRedirect: url.format({pathname: '/login', 
+    query: {message: 'Sign up successful! Please enter your username and password.'}}),
+  failureRedirect: url.format({pathname: '/signup',
+    query: {error: 'Error signing up.'}}),
   failureFlash: true
 }));
 
 app.post('/login', passport.authenticate('local-login', {
   successRedirect: '/',
-  failureRedirect: '/login',
+  failureRedirect: url.format({pathname: '/login', 
+    query: {error: 'Error logging in.'}}),
   failureFlash: true
 }));
 

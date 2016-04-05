@@ -56652,6 +56652,14 @@
 	  displayName: 'signup',
 
 	  render: function render() {
+	    var alert;
+	    if (this.props.location.query.error) {
+	      alert = _react2.default.createElement(
+	        _reactBootstrap.Alert,
+	        { bsStyle: 'danger' },
+	        this.props.location.query.error
+	      );
+	    }
 	    return _react2.default.createElement(
 	      'div',
 	      null,
@@ -56660,6 +56668,7 @@
 	        null,
 	        'Sign Up'
 	      ),
+	      alert,
 	      _react2.default.createElement(
 	        'form',
 	        { action: '/signup', method: 'post' },
@@ -56705,6 +56714,21 @@
 	  },
 
 	  render: function render() {
+	    var alert;
+	    if (this.props.location.query.error) {
+	      alert = _react2.default.createElement(
+	        _reactBootstrap.Alert,
+	        { bsStyle: 'danger' },
+	        this.props.location.query.error
+	      );
+	    }
+	    if (this.props.location.query.message) {
+	      alert = _react2.default.createElement(
+	        _reactBootstrap.Alert,
+	        null,
+	        this.props.location.query.message
+	      );
+	    }
 	    return _react2.default.createElement(
 	      'div',
 	      null,
@@ -56713,6 +56737,7 @@
 	        null,
 	        'Log In'
 	      ),
+	      alert,
 	      _react2.default.createElement(
 	        'form',
 	        { action: '/login', method: 'post' },
