@@ -284,10 +284,10 @@ var MeetingForm = React.createClass({
 
   render: function() {
     return (
+      <form>
       <div className="row">
-        <form>
         <div className="col-md-6">
-          <h4 style={{"margin-bottom": "25px"}}>Meeting Information</h4>
+          <h4 style={{"marginBottom": "25px"}}>Meeting Information</h4>
           <MeetingName name={this.state.meeting.name}
             handle={this.handleName}/>
           <MeetingCategory category={this.state.meeting.category}
@@ -309,6 +309,10 @@ var MeetingForm = React.createClass({
             count={this.getInstance().count || ""}
             handle={this.handleCount}
           />
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-md-12">
           <Button 
             className="btn-primary btn-raised" block
             type="submit" style={{marginTop: "15px"}}
@@ -316,8 +320,8 @@ var MeetingForm = React.createClass({
             Save Meeting
           </Button>
         </div>
-        </form>
       </div>
+      </form>
     );
   }
 });

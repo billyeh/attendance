@@ -23,7 +23,6 @@ var App = React.createClass({
         </a>
       );
     }
-    console.log(this.props.location.pathname === '/login');
     return (
       <div className="container">
         <a href="/">

@@ -83,7 +83,6 @@
 	        'Logout'
 	      );
 	    }
-	    console.log(this.props.location.pathname === '/login');
 	    return _react2.default.createElement(
 	      'div',
 	      { className: 'container' },
@@ -42033,17 +42032,17 @@
 
 	  render: function render() {
 	    return _react2.default.createElement(
-	      'div',
-	      { className: 'row' },
+	      'form',
+	      null,
 	      _react2.default.createElement(
-	        'form',
-	        null,
+	        'div',
+	        { className: 'row' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'col-md-6' },
 	          _react2.default.createElement(
 	            'h4',
-	            { style: { "margin-bottom": "25px" } },
+	            { style: { "marginBottom": "25px" } },
 	            'Meeting Information'
 	          ),
 	          _react2.default.createElement(_components.MeetingName, { name: this.state.meeting.name,
@@ -42067,7 +42066,15 @@
 	          _react2.default.createElement(_components.AttendanceCount, {
 	            count: this.getInstance().count || "",
 	            handle: this.handleCount
-	          }),
+	          })
+	        )
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'row' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'col-md-12' },
 	          _react2.default.createElement(
 	            _reactBootstrap.Button,
 	            {
