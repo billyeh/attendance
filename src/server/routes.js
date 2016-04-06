@@ -7,6 +7,10 @@ var Meeting = require('./models').Meeting;
 
 module.exports = function(app) {
 
+  /******
+  * API *
+  ******/
+
   app.delete('/api/meetings/:id', function(req, res) {
     Meeting.remove({_id: req.params.id}, function(err, docs) {
       res.status(200).send('deleted');

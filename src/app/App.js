@@ -14,6 +14,16 @@ var App = React.createClass({
   },
 
   render: function() {
+    var logout;
+    if (['/login', '/signup'].indexOf(this.props.location.pathname) < 0) {
+      logout = (
+        <a style={{fontSize: "2rem", marginTop: "-4rem"}} 
+          className="pull-right" href="/logout">
+          Logout
+        </a>
+      );
+    }
+    console.log(this.props.location.pathname === '/login');
     return (
       <div className="container">
         <a href="/">
@@ -21,10 +31,7 @@ var App = React.createClass({
             Attendance
           </h1>
         </a>
-        <a style={{fontSize: "2rem", marginTop: "-4rem"}} 
-          className="pull-right" href="/logout">
-          Logout
-        </a>
+        {logout}
         <hr />
       {this.props.children}
       </div>

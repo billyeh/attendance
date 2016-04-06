@@ -74,6 +74,16 @@
 	  },
 
 	  render: function render() {
+	    var logout;
+	    if (['/login', '/signup'].indexOf(this.props.location.pathname) < 0) {
+	      logout = _react2.default.createElement(
+	        'a',
+	        { style: { fontSize: "2rem", marginTop: "-4rem" },
+	          className: 'pull-right', href: '/logout' },
+	        'Logout'
+	      );
+	    }
+	    console.log(this.props.location.pathname === '/login');
 	    return _react2.default.createElement(
 	      'div',
 	      { className: 'container' },
@@ -86,12 +96,7 @@
 	          'Attendance'
 	        )
 	      ),
-	      _react2.default.createElement(
-	        'a',
-	        { style: { fontSize: "2rem", marginTop: "-4rem" },
-	          className: 'pull-right', href: '/logout' },
-	        'Logout'
-	      ),
+	      logout,
 	      _react2.default.createElement('hr', null),
 	      this.props.children
 	    );
