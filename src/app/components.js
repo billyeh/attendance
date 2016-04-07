@@ -133,9 +133,9 @@ var AttendeeList = React.createClass({
 
   render: function() {
     var tmp = this.props.attendees;
-    tmp.sort(function(a, b) {
+    /*tmp.sort(function(a, b) {
       return a.fullname < b.fullname ? -1 : 1;
-    });
+    });*/
     var attendees = this.props.attendees.map(function(attendee, i) {
       return (<Attendee attendee={attendee} key={i} {...this.props} />);
     }.bind(this));
