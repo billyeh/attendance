@@ -125,7 +125,9 @@ var MeetingForm = React.createClass({
       console.log(data);
       var tmp = this.state;
       tmp.meeting = data;
-      this.setState(tmp);
+      if (this.isMounted()) {
+        this.setState(tmp);
+      }
     }.bind(this));
     return {
       meeting: {
