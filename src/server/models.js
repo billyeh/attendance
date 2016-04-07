@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 mongoose.connect(connection_string);
 
-var Meeting = mongoose.model('Meeting', {
+var meetingSchema = mongoose.Schema({
   user: mongoose.Schema.Types.ObjectId,
   category: {type: String, default: 'Other'},
   name: {type: String, default: 'Untitled Meeting'},
@@ -24,6 +24,15 @@ var Meeting = mongoose.model('Meeting', {
     attendance: [String]
   }]
 });
+
+meetingSchema.statics.post = function(id, data, callback) {
+  Meeting.findOneAndUpdate({_id: id}, data,
+    {new: true, upsert: true},
+    callback
+  );
+};
+
+var Meeting = mongoose.model('Meeting', meetingSchema);
 
 var userSchema = mongoose.Schema({
   username: String,

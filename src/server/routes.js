@@ -40,16 +40,16 @@ module.exports = function(app) {
     delete req.body._id;
     delete req.body.__v;
     req.body.user = req.user._id;
-    Meeting.findOneAndUpdate({_id: id}, req.body,
-      {new: true, upsert: true},
-      function(err, meeting) {
+    var callback = (function() {
+      return function(err, meeting) {
         if (err) {
-          res.send(err)
+          res.send(err);
         } else {
           res.json(meeting);
         }
-      }
-    );
+      };
+    })();
+    Meeting.post(id, req.body, callback);
   });
 
   app.post('/signup', passport.authenticate('local-signup', {

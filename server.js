@@ -1,5 +1,4 @@
 var express = require('express');
-var app = express();
 var bodyParser = require('body-parser');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -7,11 +6,21 @@ var session = require('express-session');
 var passport = require('passport');
 var flash = require('connect-flash');
 var url = require('url');
+
+var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 io.on('connection', function(socket){
   console.log('a user connected');
+  socket.on('meeting', function(data) {
+    console.log(data);
+    socket.join(data);
+  });
+  socket.on('meeting data', function(data) {
+    console.log(data);
+    socket.broadcast.to(data._id).emit('update', data);
+  });
 });
 
 app.use(cookieParser());

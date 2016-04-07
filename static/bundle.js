@@ -41861,12 +41861,22 @@
 	  }
 	});
 
+	var isFromUpdate = true;
+
 	var MeetingForm = _react2.default.createClass({
 	  displayName: 'MeetingForm',
 
 	  mixins: [_util.UpsertMeetingMixin],
 
 	  getInitialState: function getInitialState() {
+	    var socket = io();
+	    socket.on('update', function (data) {
+	      isFromUpdate = true;
+	      console.log(data);
+	      var tmp = this.state;
+	      tmp.meeting = data;
+	      this.setState(tmp);
+	    }.bind(this));
 	    return {
 	      meeting: {
 	        _id: this.props.params.id,
@@ -41875,12 +41885,20 @@
 	        locality: "",
 	        attendees: [],
 	        instances: []
-	      }
+	      },
+	      socket: socket
 	    };
 	  },
 
+	  componentDidUpdate: function componentDidUpdate() {
+	    if (!isFromUpdate) {
+	      this.state.socket.emit('meeting data', this.state.meeting);
+	    }
+	    isFromUpdate = false;
+	  },
+
 	  componentDidMount: function componentDidMount() {
-	    var socket = io();
+	    this.state.socket.emit('meeting', this.props.params.id);
 	    $.get('/api/meetings/' + this.props.params.id, function (data) {
 	      this.setState({ meeting: data });
 	    }.bind(this));

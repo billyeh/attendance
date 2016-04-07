@@ -113,10 +113,20 @@ var MeetingBox = React.createClass({
   },
 });
 
+var isFromUpdate = true;
+
 var MeetingForm = React.createClass({
   mixins: [UpsertMeetingMixin],
 
   getInitialState: function() {
+    var socket = io();
+    socket.on('update', function(data) {
+      isFromUpdate = true;
+      console.log(data);
+      var tmp = this.state;
+      tmp.meeting = data;
+      this.setState(tmp);
+    }.bind(this));
     return {
       meeting: {
         _id: this.props.params.id,
@@ -124,13 +134,21 @@ var MeetingForm = React.createClass({
         category: "Other",
         locality: "",
         attendees: [],
-        instances: []
+        instances: [],
       },
+      socket: socket,
     };
   },
 
+  componentDidUpdate: function() {
+    if (!isFromUpdate) {
+      this.state.socket.emit('meeting data', this.state.meeting);
+    }
+    isFromUpdate = false;
+  },
+
   componentDidMount: function() {
-    var socket = io();
+    this.state.socket.emit('meeting', this.props.params.id);
     $.get('/api/meetings/' + this.props.params.id, function(data) {
       this.setState( {meeting: data} );
     }.bind(this));
