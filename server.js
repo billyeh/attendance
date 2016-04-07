@@ -18,7 +18,12 @@ io.on('connection', function(socket) {
   socket.on('meeting', function(data) {
     console.log(data);
     socket.join(data);
-  });
+    io.sockets.in(data).emit('num users', io.sockets.adapter.rooms[data].length);
+    socket.on('disconnect', function() {
+      var clients = io.sockets.adapter.rooms[data] || [];
+      io.sockets.in(data).emit('num users', clients.length);
+    });
+ });
   socket.on('meeting data', function(data) {
     var id = data._id;
     socket.broadcast.to(id).emit('update', data);

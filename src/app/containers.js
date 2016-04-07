@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment-timezone';
 import ObjectID from 'bson-objectid';
-import {Button, Input, DropdownButton, MenuItem} from 'react-bootstrap';
+import {Button, Input, DropdownButton, MenuItem, Alert} from 'react-bootstrap';
 
 import {
   UpsertMeetingMixin
@@ -129,6 +129,14 @@ var MeetingForm = React.createClass({
         this.setState(tmp);
       }
     }.bind(this));
+    socket.on('num users', function(data) {
+      isFromUpdate = true;
+      var tmp = this.state;
+      tmp.numUsers = data;
+      if (this.isMounted()) {
+        this.setState(tmp);
+      }
+    }.bind(this));
     return {
       meeting: {
         _id: this.props.params.id,
@@ -137,6 +145,7 @@ var MeetingForm = React.createClass({
         locality: "",
         attendees: [],
         instances: [],
+        numUsers: 1,
       },
       socket: socket,
     };
@@ -303,8 +312,17 @@ var MeetingForm = React.createClass({
   },
 
   render: function() {
+    var alert;
+    if (this.state.numUsers > 1) {
+      alert = (
+        <Alert bsStyle="warning">
+          There are {this.state.numUsers - 1} other user(s) editing this meeting
+        </Alert>
+      );
+    }
     return (
       <form>
+      {alert}
       <div className="row">
         <div className="col-md-6">
           <h4 style={{"marginBottom": "25px"}}>Meeting Information</h4>

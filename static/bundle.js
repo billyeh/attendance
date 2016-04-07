@@ -41879,6 +41879,14 @@
 	        this.setState(tmp);
 	      }
 	    }.bind(this));
+	    socket.on('num users', function (data) {
+	      isFromUpdate = true;
+	      var tmp = this.state;
+	      tmp.numUsers = data;
+	      if (this.isMounted()) {
+	        this.setState(tmp);
+	      }
+	    }.bind(this));
 	    return {
 	      meeting: {
 	        _id: this.props.params.id,
@@ -41886,7 +41894,8 @@
 	        category: "Other",
 	        locality: "",
 	        attendees: [],
-	        instances: []
+	        instances: [],
+	        numUsers: 1
 	      },
 	      socket: socket
 	    };
@@ -42051,9 +42060,20 @@
 	  },
 
 	  render: function render() {
+	    var alert;
+	    if (this.state.numUsers > 1) {
+	      alert = _react2.default.createElement(
+	        _reactBootstrap.Alert,
+	        { bsStyle: 'warning' },
+	        'There are ',
+	        this.state.numUsers - 1,
+	        ' other user(s) editing this meeting'
+	      );
+	    }
 	    return _react2.default.createElement(
 	      'form',
 	      null,
+	      alert,
 	      _react2.default.createElement(
 	        'div',
 	        { className: 'row' },
