@@ -7,19 +7,24 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var url = require('url');
 
+var Meeting = require('./src/server/models').Meeting;
+
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-io.on('connection', function(socket){
+io.on('connection', function(socket) {
   console.log('a user connected');
   socket.on('meeting', function(data) {
     console.log(data);
     socket.join(data);
   });
   socket.on('meeting data', function(data) {
-    console.log(data);
-    socket.broadcast.to(data._id).emit('update', data);
+    var id = data._id;
+    socket.broadcast.to(id).emit('update', data);
+    delete data._id;
+    delete data.__v;
+    Meeting.post(id, data, function() {});
   });
 });
 
