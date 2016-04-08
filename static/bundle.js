@@ -57964,7 +57964,7 @@
 	      return a.fullname < b.fullname ? -1 : 1;
 	    });*/
 	    var attendees = this.props.attendees.map(function (attendee, i) {
-	      return _react2.default.createElement(Attendee, _extends({ attendee: attendee, key: i }, this.props));
+	      return _react2.default.createElement(Attendee, _extends({ attendee: attendee, key: i, index: i }, this.props));
 	    }.bind(this));
 	    return _react2.default.createElement(
 	      'div',
@@ -57998,7 +57998,7 @@
 	  render: function render() {
 	    return _react2.default.createElement(
 	      'div',
-	      { key: this.props.key, className: 'input-group' },
+	      { key: this.props.index, className: 'input-group' },
 	      _react2.default.createElement(DelBox, this.props),
 	      _react2.default.createElement('input', { type: 'text', name: 'fullname', placeholder: 'Full Name',
 	        id: this.props.attendee.id,

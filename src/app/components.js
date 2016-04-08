@@ -137,7 +137,7 @@ var AttendeeList = React.createClass({
       return a.fullname < b.fullname ? -1 : 1;
     });*/
     var attendees = this.props.attendees.map(function(attendee, i) {
-      return (<Attendee attendee={attendee} key={i} {...this.props} />);
+      return (<Attendee attendee={attendee} key={i} index={i} {...this.props} />);
     }.bind(this));
     return (
       <div className="form-group">
@@ -161,7 +161,7 @@ var AttendeeList = React.createClass({
 var Attendee = React.createClass({
   render: function() {
     return (
-      <div key={this.props.key} className="input-group">
+      <div key={this.props.index} className="input-group">
         <DelBox {...this.props} />
         <input type="text" name="fullname" placeholder="Full Name"
           id={this.props.attendee.id}
