@@ -26,7 +26,6 @@ var meetingSchema = mongoose.Schema({
 });
 
 meetingSchema.statics.post = function(id, data, callback) {
-  console.log('OLD', id, data);
   Meeting.findOneAndUpdate({_id: id}, data,
     {new: true, upsert: true},
     callback
