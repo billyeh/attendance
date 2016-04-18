@@ -1,7 +1,11 @@
 import React from 'react';
 import moment from 'moment-timezone';
 import ObjectID from 'bson-objectid';
-import {Button, Input, DropdownButton, MenuItem, Alert} from 'react-bootstrap';
+import Button from 'react-bootstrap/lib/Button';
+import Input from 'react-bootstrap/lib/Input';
+import DropdownButton from 'react-bootstrap/lib/DropdownButton';
+import MenuItem from 'react-bootstrap/lib/MenuItem';
+import Alert from 'react-bootstrap/lib/Alert';
 
 import {
   UpsertMeetingMixin

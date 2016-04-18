@@ -1,8 +1,13 @@
 import React from 'react';
 import moment from 'moment-timezone';
 import DatePicker from 'react-datepicker';
-import {Button, Input, DropdownButton, MenuItem, Alert, Glyphicon} from 'react-bootstrap';
-import {Link} from 'react-router';
+import Button from 'react-bootstrap/lib/Button';
+import Input from 'react-bootstrap/lib/Input';
+import DropdownButton from 'react-bootstrap/lib/DropdownButton';
+import MenuItem from 'react-bootstrap/lib/MenuItem';
+import Alert from 'react-bootstrap/lib/Alert';
+import Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import Link from 'react-router/lib/Link';
 
 require('react-datepicker/dist/react-datepicker.css');
 
