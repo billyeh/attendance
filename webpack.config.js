@@ -1,10 +1,23 @@
+var webpack = require('webpack');
+
 module.exports = {
   entry: './src/app/App.js',
   output: {
     path: './static',
     filename: 'bundle.js'
   },
-
+  plugins:[
+    new webpack.DefinePlugin({
+      'process.env':{
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress:{
+        warnings: true
+      }
+    })
+  ],
   module: {
     loaders: [
       {
