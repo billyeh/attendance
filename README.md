@@ -20,5 +20,6 @@ and build the application. Also ensure that MongoDB is installed and running.
 * clone meeting
 * use datetime-local input for date
 * modularize code, probably switch to Redux :o
+* disconnect socket on unmount
 
 ###displaying the collected data
