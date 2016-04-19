@@ -152,6 +152,7 @@ var MeetingForm = React.createClass({
   },
 
   componentDidMount: function() {
+    this.state.socket.emit('join meeting', this.props.params.id);
     $.get('/api/meetings/' + this.props.params.id, function(data) {
       var temp = this.state;
       temp.meeting = data;
