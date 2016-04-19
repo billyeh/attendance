@@ -14,7 +14,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 io.on('connection', function(socket) {
-  socket.on('meeting', function(data) {
+  socket.on('join meeting', function(data) {
     socket.join(data);
     io.sockets.in(data).emit('num users', io.sockets.adapter.rooms[data].length);
     socket.on('disconnect', function() {

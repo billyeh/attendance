@@ -129,23 +129,6 @@ var MeetingForm = React.createClass({
 
   getInitialState: function() {
     var socket = io();
-    socket.on('update', function(data) {
-      isFromUpdate = true;
-      console.log(data);
-      var tmp = this.state;
-      tmp.meeting = data;
-      if (this.isMounted()) {
-        this.setState(tmp);
-      }
-    }.bind(this));
-    socket.on('num users', function(data) {
-      isFromUpdate = true;
-      var tmp = this.state;
-      tmp.numUsers = data;
-      if (this.isMounted()) {
-        this.setState(tmp);
-      }
-    }.bind(this));
     return {
       meeting: {
         _id: this.props.params.id,
@@ -161,6 +144,7 @@ var MeetingForm = React.createClass({
   },
 
   componentDidUpdate: function() {
+    console.log(this.state);
     if (!isFromUpdate) {
       this.state.socket.emit('meeting data', this.state.meeting);
     }
@@ -168,9 +152,23 @@ var MeetingForm = React.createClass({
   },
 
   componentDidMount: function() {
-    this.state.socket.emit('meeting', this.props.params.id);
     $.get('/api/meetings/' + this.props.params.id, function(data) {
-      this.setState( {meeting: data} );
+      var temp = this.state;
+      temp.meeting = data;
+      this.setState(temp);
+    }.bind(this));
+    this.state.socket.on('update', function(data) {
+      console.log('update1');
+      isFromUpdate = true;
+      var tmp = this.state;
+      tmp.meeting = data;
+      this.setState(tmp);
+    }.bind(this));
+    this.state.socket.on('num users', function(data) {
+      isFromUpdate = true;
+      var tmp = this.state;
+      tmp.numUsers = data;
+      this.setState(tmp);
     }.bind(this));
   },
 
