@@ -106,6 +106,11 @@ var MeetingBox = React.createClass({
     var filteredMeetings = this.state.meetings.filter(function(m) {
       return m.category === this.props.params.type;
     }.bind(this));
+    filteredMeetings.sort(function(a, b) {
+      if (a.name < b.name) return -1;
+      if (a.name > b.name) return 1;
+      return 0;
+    });
     if (filteredMeetings.length === 0) {
       return <span>There are no meetings to display</span>;
     }
