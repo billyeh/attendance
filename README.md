@@ -17,11 +17,11 @@ and build the application. Also ensure that MongoDB is installed and running.
 * import attendance
 * ~~reuse data from home page to meeting view~~ don't think we want this in
 case data is stale
-* real-time updates
+* ~~real-time updates~~
 * clone meeting
 * use datetime-local input for date
 * modularize code, probably switch to Redux :o
-* disconnect socket on unmount
+* ~~disconnect socket on unmount~~
 * use callback to change save button to "saved"
 
 ###displaying the collected data
