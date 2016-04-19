@@ -29,6 +29,11 @@ io.on('connection', function(socket) {
     delete data.__v;
     Meeting.post(id, data, function() {});
   });
+  socket.on('leave meeting', function(data) {
+    socket.leave(data);
+    var clients = io.sockets.adapter.rooms[data] || [];
+    io.sockets.in(data).emit('num users', clients.length);
+  });
 });
 
 app.use(cookieParser());

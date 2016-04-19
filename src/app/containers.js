@@ -169,6 +169,10 @@ var MeetingForm = React.createClass({
     }.bind(this));
   },
 
+  componentWillUnmount: function() {
+    this.state.socket.emit('leave meeting', this.props.params.id);
+  },
+
   handleCategory: function(e) {
     var tmp = this.state;
     tmp.meeting.category = $(e.target).val();
@@ -316,9 +320,9 @@ var MeetingForm = React.createClass({
   },
 
   render: function() {
-    var alert;
+    var warning;
     if (this.state.numUsers > 1) {
-      alert = (
+      warning = (
         <Alert bsStyle="warning">
           There are {this.state.numUsers - 1} other user(s) editing this meeting
         </Alert>
@@ -326,7 +330,7 @@ var MeetingForm = React.createClass({
     }
     return (
       <form>
-      {alert}
+      {warning}
       <div className="row">
         <div className="col-md-6">
           <h4 style={{"marginBottom": "25px"}}>Meeting Information</h4>
