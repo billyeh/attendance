@@ -123,12 +123,12 @@ var MeetingBox = React.createClass({
 });
 
 var isFromUpdate = true;
+var socket = io();
 
 var MeetingForm = React.createClass({
   mixins: [UpsertMeetingMixin],
 
   getInitialState: function() {
-    var socket = io();
     return {
       meeting: {
         _id: this.props.params.id,
@@ -139,33 +139,31 @@ var MeetingForm = React.createClass({
         instances: [],
         numUsers: 1,
       },
-      socket: socket,
     };
   },
 
   componentDidUpdate: function() {
-    console.log(this.state);
     if (!isFromUpdate) {
-      this.state.socket.emit('meeting data', this.state.meeting);
+      socket.emit('meeting data', this.state.meeting);
     }
     isFromUpdate = false;
   },
 
   componentDidMount: function() {
-    this.state.socket.emit('join meeting', this.props.params.id);
+    socket.emit('join meeting', this.props.params.id);
     $.get('/api/meetings/' + this.props.params.id, function(data) {
       var temp = this.state;
       temp.meeting = data;
       this.setState(temp);
     }.bind(this));
-    this.state.socket.on('update', function(data) {
+    socket.on('update', function(data) {
       console.log('update1');
       isFromUpdate = true;
       var tmp = this.state;
       tmp.meeting = data;
       this.setState(tmp);
     }.bind(this));
-    this.state.socket.on('num users', function(data) {
+    socket.on('num users', function(data) {
       isFromUpdate = true;
       var tmp = this.state;
       tmp.numUsers = data;
@@ -174,7 +172,7 @@ var MeetingForm = React.createClass({
   },
 
   componentWillUnmount: function() {
-    this.state.socket.emit('leave meeting', this.props.params.id);
+    socket.emit('leave meeting', this.props.params.id);
   },
 
   handleCategory: function(e) {
