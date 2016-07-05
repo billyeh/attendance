@@ -354,13 +354,34 @@ var MeetingList = React.createClass({
   }
 });
 
+var StatsButton = React.createClass({
+  contextTypes: {
+    router: React.PropTypes.object
+  },
+
+  goToStats: function(e) {
+    e.preventDefault();
+    this.context.router.push('/meetings/' + this.props.id + '/stats');
+  },
+
+  render: function() {
+    return (
+      <Button className="pull-right" onClick={this.goToStats}>
+        Statistics
+      </Button>
+    );
+  }
+});
+
 var MeetingListItem = React.createClass({
   render: function() {
     return (
       <Link to={"/meetings/" + this.props.data._id}>
         <div>
           <h4>
-            <DeleteMeeting id={this.props.data._id}/> {this.props.data.name}
+            <DeleteMeeting id={this.props.data._id}/> 
+              {this.props.data.name}
+            <StatsButton id={this.props.data._id} />
           </h4>
         </div>
         <hr style={{borderColor: "#eee"}}/>

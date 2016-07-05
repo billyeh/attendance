@@ -6,6 +6,7 @@ import Input from 'react-bootstrap/lib/Input';
 import DropdownButton from 'react-bootstrap/lib/DropdownButton';
 import MenuItem from 'react-bootstrap/lib/MenuItem';
 import Alert from 'react-bootstrap/lib/Alert';
+import LineChart from 'react-chartjs/lib/line';
 
 import {
   UpsertMeetingMixin
@@ -21,6 +22,97 @@ import {
   AttendeeList,
   AttendanceCount
 } from './components.js';
+
+var MeetingStats = React.createClass({
+  getInitialState: function() {
+    return {
+      meeting: {
+        _id: this.props.params.id,
+        name: "Untitled Meeting",
+        category: "Other",
+        locality: "",
+        attendees: [],
+        instances: []
+      },
+      attendee: ""
+    };
+  },
+
+  componentDidMount: function() {
+    $.get('/api/meetings/' + this.props.params.id, function(data) {
+      this.setState({
+        meeting: data,
+        attendee: ""
+      });
+    }.bind(this));
+  },
+
+  changeAttendee: function(e) {
+    var tmp = this.state;
+    tmp.attendee = $("#attendee option:selected").attr('id');
+    this.setState(tmp);
+  },
+
+  render: function() {
+    var instances = this.state.meeting.instances.sort(function(a, b) {
+      return a.date > b.date ? 1 : -1;
+    });
+    var counts = instances.map(function(val, i, arr) {
+      return val.attendance.length;
+    }); 
+    var labels = instances.map(function(val, i, arr) {
+      var date = moment(val.date).format('M/D/YY');
+      if (instances[i].attendance.includes(this.state.attendee)) {
+        date = '{' + date + '}';
+      }
+      return date;
+    }.bind(this));
+    var data = {
+      labels: labels,
+      datasets: [{
+        label: "Attendance for " + this.state.meeting.name,
+        tension: 0.1,
+        radius: 5,
+        data: counts
+      }], 
+    };
+    var steps = 5;
+    var options = {
+      scales: {
+        yAxes: [{
+          ticks: {
+            min: 0,
+            stepSize: 1
+          }
+        }]
+      }
+    };
+    var optionItems = this.state.meeting.attendees.map(function(val, i, arr) {
+      return (
+        <option key={val.id} id={val.id}>
+          {val.fullname}
+        </option>
+      );
+    });
+    optionItems.unshift(<option key="0" id={""}></option>);
+    var names = this.state.meeting.attendees.filter(function(val) {
+      return val.id === this.state.attendee;
+    }.bind(this));
+    var attendeeName = names.length > 0 ? names[0].fullname : "";
+    return (
+      <div>
+        <LineChart data={data} options={options}/>
+        <h4>View an attendee's attendance </h4>
+        <p>Attended meeting dates are {'{'}bracketed{'}'}.</p>
+        <select id="attendee" className="form-group form-control" 
+          value={attendeeName} onChange={this.changeAttendee}>
+          {optionItems}
+        </select>
+      </div>
+    );
+  }
+});
+
 
 var MeetingImport = React.createClass({
   mixins: [UpsertMeetingMixin],
@@ -65,7 +157,6 @@ var MeetingImport = React.createClass({
         category: row[1] || "None"
       });
     });
-    console.log(tmp);
     this.addMeeting(tmp, function(data) {
       this.context.router.push('/');
     }.bind(this));
@@ -157,7 +248,6 @@ var MeetingForm = React.createClass({
       this.setState(temp);
     }.bind(this));
     socket.on('update', function(data) {
-      console.log('update1');
       isFromUpdate = true;
       var tmp = this.state;
       tmp.meeting = data;
@@ -377,3 +467,4 @@ var MeetingForm = React.createClass({
 module.exports.MeetingForm = MeetingForm;
 module.exports.MeetingBox = MeetingBox;
 module.exports.MeetingImport = MeetingImport;
+module.exports.MeetingStats = MeetingStats;
